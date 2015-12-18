@@ -1,8 +1,7 @@
-/* LodestarJS Router - 1.0.2. 
+/* LodestarJS Router - 1.0.3. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 19:19:59 GMT+0000 (GMT) 
-Commit Hash: none */
+Published: Fri Dec 18 2015 21:34:50 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -127,8 +126,8 @@ Commit Hash: none */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.0.2 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.2 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.0.3 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.3 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -227,6 +226,7 @@ Commit Hash: none */
    */
   function resolve(path) {
 
+    if (path === '') path = '/';
     if (!path) return;
 
     var pointer = this.routes,
@@ -378,7 +378,7 @@ Commit Hash: none */
     route = route.replace(/^(\/?[\#\!\?]+)/, '').replace(/$\//, '');
 
     if (this.config.basePath.length) {
-      route.replace(this.config.basePath, '');
+      route = route.replace(this.config.basePath, '');
     }
 
     return route;
@@ -440,7 +440,8 @@ Commit Hash: none */
 
     var target = e.target,
         anchorLink = '',
-        formattedRoute = undefined;
+        formattedRoute = '',
+        unformattedRoute = '';
 
     if (target.tagName !== 'A') target = checkParents(target);
 
@@ -452,13 +453,15 @@ Commit Hash: none */
 
     if (anchorLink.match(/(?:https?):/) && anchorLink.indexOf(window.location.hostname) === -1) return;
 
-    formattedRoute = formatRoute.call(this, removeOrigin(anchorLink));
+    // To push to the url in case there is a base path
+    unformattedRoute = removeOrigin(anchorLink);
+    formattedRoute = formatRoute.call(this, unformattedRoute);
 
-    history.pushState(null, null, formattedRoute);
+    history.pushState(null, null, unformattedRoute);
 
     e.preventDefault();
 
-    return formattedRoute;
+    return formattedRoute === '' ? '/' : formattedRoute;
   }
 
   /**
@@ -494,7 +497,12 @@ Commit Hash: none */
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for clicks or popstate.');
 
       docListener('click', function (e) {
-        _this.resolve(historyClick.call(_this, e));
+
+        var historyLink = historyClick.call(_this, e);
+
+        if (historyLink) {
+          _this.resolve(historyLink);
+        }
       });
       windowListener('popstate', function () {
         _this.resolve(formatRoute.call(_this, window.location.pathname));
