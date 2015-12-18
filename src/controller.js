@@ -1,4 +1,4 @@
-import loadPage from './ajax';
+import { loadPage, parser} from './ajax';
 import { isObject } from 'lodestar-router/src/utils/object';
 import { logger }  from 'lodestar-router/src/utils/log';
 
@@ -18,6 +18,8 @@ function setup( options ) {
   this.on = function() { throw new Error('Use the actions attribute in the route object.'); };
   this.observe = function() { new Error('Use the observe attribute in the route object.'); };
 
+  options.controller.call(this, this.routeData || {});
+
 }
 
 /**
@@ -31,6 +33,14 @@ export default function setupController( options ) {
   if ( options.view && !options.active) {
 
     if ( isObject(options.view.template) && options.view.template.url ) {
+
+      if ( options.view.template.notOnSame && options.view.template.url === ( window.LodeVar.previousPath || options.view.template.url ) ) {
+
+        options.view.template = parser( document.getElementsByTagName('body')[0], options.view.template );
+
+        setup.call( this, options);
+        return;
+      }
 
       loadPage( options.view.template ).then( ( template ) => {
 

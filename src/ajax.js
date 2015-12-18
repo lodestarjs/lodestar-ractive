@@ -1,18 +1,12 @@
 let Promise = Promise || Ractive.Promise;
 
 // Returns the requested element of the target doc and removes script tags
-function parser( doc, options ) {
+export function parser( doc, options ) {
 
   let el = options.container ? options.container : 'body',
     regExp = new RegExp('(<[\s\/]*script\\b[^>]*>)([^>]*)(<\/script>)', 'gi');
 
-  if ( el.indexOf('#') > -1 ) {
-    return doc.getElementById( el.replace('#', '') ).innerHTML.replace(regExp, '');
-  } else if ( el.indexOf('.') > -1 ) {
-    return doc.getElementsByClassName( el.replace('.', '') )[0].innerHTML.replace(regExp, '');
-  } else {
-    return doc.getElementsByTagName( el )[0].innerHTML.replace(regExp, '');
-  }
+  return doc.querySelector(el).innerHTML.replace(regExp, '');
 
 }
 
@@ -22,7 +16,7 @@ function parser( doc, options ) {
  * @param  {String} options, the internal url to load page content from
  * @return {Promise}, Will return a string of the page content
  */
-export default function loadPage( options ) {
+export function loadPage( options ) {
 
   return new Promise(function ( resolve, reject ) {
 
