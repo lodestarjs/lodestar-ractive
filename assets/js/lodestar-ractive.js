@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.0.2. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 19:22:27 GMT+0000 (GMT) 
+Published: Fri Dec 18 2015 20:00:17 GMT+0000 (GMT) 
 Commit Hash: none */
 
 (function (global, factory) {
@@ -378,7 +378,7 @@ Commit Hash: none */
     route = route.replace(/^(\/?[\#\!\?]+)/, '').replace(/$\//, '');
 
     if (this.config.basePath.length) {
-      route.replace(this.config.basePath, '');
+      route = route.replace(this.config.basePath, '');
     }
 
     return route;
@@ -440,7 +440,8 @@ Commit Hash: none */
 
     var target = e.target,
         anchorLink = '',
-        formattedRoute = undefined;
+        formattedRoute = '',
+        unformattedRoute = '';
 
     if (target.tagName !== 'A') target = checkParents(target);
 
@@ -452,9 +453,11 @@ Commit Hash: none */
 
     if (anchorLink.match(/(?:https?):/) && anchorLink.indexOf(window.location.hostname) === -1) return;
 
-    formattedRoute = formatRoute.call(this, removeOrigin(anchorLink));
+    // To push to the url in case there is a base path
+    unformattedRoute = removeOrigin(anchorLink);
+    formattedRoute = formatRoute.call(this, unformattedRoute);
 
-    history.pushState(null, null, formattedRoute);
+    history.pushState(null, null, unformattedRoute);
 
     e.preventDefault();
 
