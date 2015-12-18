@@ -1,4 +1,5 @@
 import { loadPage, parser} from './ajax';
+import events from './events';
 import { isObject } from 'lodestar-router/src/utils/object';
 import { logger }  from 'lodestar-router/src/utils/log';
 
@@ -9,6 +10,13 @@ function setup( options ) {
   for ( let key in  ractive ) {
     if ( ractive.hasOwnProperty(key) && key !== 'data' ) {
       this[key] = ractive[key];
+    }
+  }
+
+  // Ractive doesn't let us touch data, so we'll have to manually add the data methods
+  for ( let i = 0, ii = events.length; i < ii; i++ ) {
+    if ( typeof ractive[events[i]] !== 'undefined' ) {
+      this[[events[i]]] = ractive[events[i]];
     }
   }
 
