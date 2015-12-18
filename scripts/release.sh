@@ -1,17 +1,14 @@
 set -e
 
 # Get the version from the package JSON
-VERSION=$(cat package.json | grep 'version' | sed 's/"version": "\(.*\)",/\1/' | sed 's/[[:space:]]//g')
 NAME=$(cat package.json | grep 'name' | sed 's/"name": "\(.*\)",/\1/' | sed 's/[[:space:]]//g')
 BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 UPSTREAM=$(git rev-parse --abbrev-ref master@{u})
 
-read -p "Releasing $VERSION for $NAME - are you sure? (y/n)" -n 1 -r
+read -p "Releasing $NAME - are you sure? (y/n)" -n 1 -r
 echo # Putting in a  new line...
 
 if [ $REPLY == "y" ]; then
-
-  echo "> Beginning release of $NAME version $VERSION"
 
   if [ $BRANCH != "master" ]; then
     echo "> Changing branch"
@@ -21,6 +18,10 @@ if [ $REPLY == "y" ]; then
   # Get latest from master
   git fetch
   git merge ${UPSTREAM}
+
+  VERSION=$(cat package.json | grep 'version' | sed 's/"version": "\(.*\)",/\1/' | sed 's/[[:space:]]//g')
+
+  echo "> Beginning release of $NAME version $VERSION"
 
   echo "> Linting code"
   npm run lint
