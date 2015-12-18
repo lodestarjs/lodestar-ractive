@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.0.3. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 20:39:13 GMT+0000 (GMT) */
+Published: Fri Dec 18 2015 20:42:27 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -469,7 +469,7 @@ Published: Fri Dec 18 2015 20:39:13 GMT+0000 (GMT) */
    * @return {Void}, nothing returned
    */
   function listener() {
-    var _this2 = this;
+    var _this = this;
 
     if (this.config.listenerActive) return;
 
@@ -482,7 +482,7 @@ Published: Fri Dec 18 2015 20:39:13 GMT+0000 (GMT) */
     this.config.listenerActive = true;
 
     docListener('click', function (e) {
-      window.LodeVar.previousPath = formatRoute.call(_this2, removeOrigin(window.location.href));
+      window.LodeVar.previousPath = formatRoute.call(_this, removeOrigin(window.location.href));
     });
 
     if (!this.config.useHistory || !hasHistory) {
@@ -490,21 +490,22 @@ Published: Fri Dec 18 2015 20:39:13 GMT+0000 (GMT) */
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for hash changes.');
 
       windowListener(hasEventListener ? 'hashchange' : 'onhashchange', function () {
-        _this2.resolve(formatRoute.call(_this2, window.location.hash));
+        _this.resolve(formatRoute.call(_this, window.location.hash));
       });
     } else if (this.config.useHistory && hasHistory) {
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for clicks or popstate.');
 
       docListener('click', function (e) {
+
         var historyLink = historyClick.call(_this, e);
 
         if (historyLink) {
-          _this2.resolve(historyLink);
+          _this.resolve(historyLink);
         }
       });
       windowListener('popstate', function () {
-        _this2.resolve(formatRoute.call(_this2, window.location.pathname));
+        _this.resolve(formatRoute.call(_this, window.location.pathname));
       });
     }
 
