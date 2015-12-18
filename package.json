@@ -1,0 +1,33 @@
+{
+  "name": "lodestar-ractive",
+  "version": "1.0.0",
+  "description": "A combination of the LodestarJS-Router and RactiveJS in one place as a proof of concept, presented as a framework.",
+  "jsnext:main": "src/main.js",
+  "main": "dist/lodestar-ractive.js",
+  "scripts": {
+    "start": "./node_modules/.bin/gobble",
+    "build": "rm -rf dist && ./node_modules/.bin/gobble build dist",
+    "lint": "node node_modules/eslint/bin/eslint src/"
+  },
+  "author": "danjford <forddj93@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cz-conventional-changelog": "^1.1.5",
+    "eslint": "^1.10.3",
+    "gobble": "^0.10.2",
+    "gobble-cli": "^0.6.0",
+    "gobble-eslint": "^0.1.0",
+    "gobble-rollup-babel": "^0.6.1",
+    "gobble-uglifyjs": "^0.2.1",
+    "rollup-plugin-commonjs": "^1.4.0"
+  },
+  "dependencies": {
+    "lodestar-router": "1.0.1",
+    "ractive": "0.7.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
