@@ -48,9 +48,18 @@ router.createRoute({
   controller: function controller() {
 
     clearCloak();
+
+    debugger;
+    // console.log(this.get())
+    // window.addEventListener("beforeunload", () => {
+    //   console.log(this);
+    //   // localStorage.indexData = this.get();
+    // });
   },
   view: {
     el: '#main-page',
+    data: {},
+    // data: (localStorage.indexData || { 'todo': { 'items': [] } }),
     template: {
       url: '/lodestar-ractive',
       container: '#main-page',
@@ -63,6 +72,13 @@ router.createRoute({
     },
     downToFirst: function downToFirst() {
       scrollTo(document.body, document.getElementById('first').offsetTop, 600);
+    },
+    addTodo: function addTodo(event, inputVal) {
+      if (inputVal.length) {
+        this.push('todo.items', { task: inputVal });
+        this.set('todo.input', '');
+      }
+      event.original.preventDefault();
     }
   }
 });

@@ -58,6 +58,30 @@
         </div>
       </div>
 
+     <div id="first" class="col-sm-10 center-col">
+        <div class="panel">
+          <div class="panel-heading">
+            <h1 class="title text-center">Simple Todo MVC</h1>
+          </div>
+          <div class="panel-body cloak text-center clearfix">
+            <div class="todo-list">
+              <form on-submit="addTodo:{{todo.input}}">
+                <input type="text" value="{{todo.input}}" placeholder="What do you have todo?" />
+              </form>
+              <ul class="{{#unless todo.items.length}} hide {{/unless}}">
+                {{#each todo.items:i}}
+                  <li>
+                    <span class="{{this.completed ? 'completed': ''}}">{{task}}</span>
+                    <button on-click="set(@keypath + '.completed', !completed)">{{#if completed}}undo{{else}}complete{{/if}}</button>
+                    <button on-click="splice('todo.items', @index, 1)">delete</button>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="col-sm-10 center-col">
         <div class="panel">
           <div class="panel-heading">

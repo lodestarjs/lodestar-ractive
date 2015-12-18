@@ -1,6 +1,6 @@
-/* LodestarJS Router - 1.0.3. 
-Author: Dan J Ford 
-Contributors: undefined 
+/* LodestarJS Router - 1.0.3.
+Author: Dan J Ford
+Contributors: undefined
 Published: Fri Dec 18 2015 21:37:30 GMT+0000 (GMT) */
 
 (function (global, factory) {
@@ -648,11 +648,18 @@ Published: Fri Dec 18 2015 21:37:30 GMT+0000 (GMT) */
 
   function setup(options) {
 
-    var ractive = new Ractive(options.view);
+    var ractive = new Ractive(options.view),
+      events = [ 'add', 'animate', 'detach', 'find', 'findAll', 'findAllComponents', 'findComponent', 'findContainer', 'findParent', 'fire', 'get', 'insert', 'link', 'merge', 'off', 'pop', 'push', 'render', 'reset', 'resetPartial', 'resetTemplate', 'reverse', 'set', 'shift', 'sort', 'splice', 'subtract', 'teardown', 'toggle', 'toHTML', 'unlink', 'unrender', 'unshift', 'update', 'updateModel'];
 
     for (var key in ractive) {
       if (ractive.hasOwnProperty(key) && key !== 'data') {
         this[key] = ractive[key];
+      }
+    }
+
+    for ( var i = 0, ii = events.length; i < ii; i++ ) {
+      if ( typeof ractive[events[i]] !== 'undefined' ) {
+        this[[events[i]]] = ractive[events[i]];
       }
     }
 

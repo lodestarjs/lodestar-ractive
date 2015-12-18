@@ -724,6 +724,26 @@ th {
     width: 100%;
   }
 }
+.todo-list ul {
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ddd;
+  border-top: 0;
+}
+.todo-list li {
+  display: block;
+  padding: 5px 0;
+}
+.todo-list li:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+.todo-list li .completed {
+  text-decoration: line-through;
+}
+.todo-list input {
+  padding: 8px 10px;
+  width: 100%;
+}
 html {
   box-sizing: border-box;
 }
