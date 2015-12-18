@@ -1,4 +1,4 @@
-let router = new LodeRactive({ DEBUG: false});
+let router = new LodeRactive({ DEBUG: false, useHistory: true});
 
 function clearCloak() {
 
@@ -21,6 +21,28 @@ function scrollTo(element, to, duration) {
 }
 
 router.createRoute({
+  path: '/example',
+  controller: () => {
+
+    clearCloak();
+
+  },
+  view: {
+    el: '#examples',
+    template: {
+      url: '/example',
+      container: '#examples',
+      notOnSame: true
+    }
+  },
+  actions: {
+    downToFirst: function() {
+      scrollTo(document.body, document.getElementById('first').offsetTop, 600);
+    }
+  }
+});
+
+router.createRoute({
   path: '/',
   controller: () => {
 
@@ -29,7 +51,11 @@ router.createRoute({
   },
   view: {
     el: '#main-page',
-    template: document.getElementById('main-page').innerHTML
+    template: {
+      url: '/',
+      container: '#main-page',
+      notOnSame: true
+    }
   },
   actions: {
     randomColor: function() {

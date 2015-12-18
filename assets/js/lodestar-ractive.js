@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.0.1. 
-Author: Dan J Ford 
-Contributors: undefined 
-Published: Fri Dec 18 2015 15:54:46 GMT+0000 (GMT) 
+/* LodestarJS Router - 1.0.1.
+Author: Dan J Ford
+Contributors: undefined
+Published: Fri Dec 18 2015 15:54:46 GMT+0000 (GMT)
 Commit Hash: none */
 
 (function (global, factory) {
@@ -475,6 +475,8 @@ Commit Hash: none */
 
     this.config.listenerActive = true;
 
+    docListener('click', function (e) { window.LodeVar = {}; LodeVar.previousPath = formatRoute.call( _this, removeOrigin(window.location.href)) } );
+
     if (!this.config.useHistory || !hasHistory) {
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for hash changes.');
@@ -586,13 +588,8 @@ Commit Hash: none */
     var el = options.container ? options.container : 'body',
         regExp = new RegExp('(<[\s\/]*script\\b[^>]*>)([^>]*)(<\/script>)', 'gi');
 
-    if (el.indexOf('#') > -1) {
-      return doc.getElementById(el.replace('#', '')).innerHTML.replace(regExp, '');
-    } else if (el.indexOf('.') > -1) {
-      return doc.getElementsByClassName(el.replace('.', ''))[0].innerHTML.replace(regExp, '');
-    } else {
-      return doc.getElementsByTagName(el)[0].innerHTML.replace(regExp, '');
-    }
+    return doc.querySelector(el).innerHTML.replace(regExp, '');
+
   }
 
   /**
@@ -654,6 +651,9 @@ Commit Hash: none */
     this.observe = function () {
       new Error('Use the observe attribute in the route object.');
     };
+
+    options.controller.call(this, this.routeData || {});
+
   }
 
   /**
@@ -668,6 +668,14 @@ Commit Hash: none */
     if (options.view && !options.active) {
 
       if (isObject(options.view.template) && options.view.template.url) {
+
+        if ( options.view.template.notOnSame && options.view.template.url === ( window.LodeVar ? window.LodeVar.previousPath : options.view.template.url ) ) {
+
+          options.view.template = parser( document.getElementsByTagName('body')[0], options.view.template );
+
+          setup.call( this, options);
+          return;
+        }
 
         loadPage(options.view.template).then(function (template) {
 
@@ -708,7 +716,6 @@ Commit Hash: none */
         path: options.path,
         controller: function controller(routeData) {
           setupController.call(this, options);
-          options.controller.call(this, routeData || {});
         }
       });
     },

@@ -2,8 +2,7 @@
 <html>
 <head>
   <title>Lodestar-Ractive</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/base.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/monokai.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/base.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
@@ -21,50 +20,59 @@
 
     </section>
 
-    <div id="first" class="col-sm-10 center-col">
-      <div class="panel">
-        <div class="panel-heading">
-          <h1 class="title text-center">Two way data-binding</h1>
-        </div>
-        <div class="panel-body cloak text-center clearfix">
-          <div class="row">
-            <div class="col-sm-6">
-              <input type="text" class="input stretch" value="{{fullName}}" placeholder="Enter a name" />
-            </div>
-            <div class="col-sm-6">
-              Hi my name is {{fullName}}, and I find this is so simple!
+    <section id="examples">
+      <div id="first" class="col-sm-10 center-col">
+        <div class="panel">
+          <div class="panel-heading">
+            <h1 class="title text-center">Two way data-binding</h1>
+          </div>
+          <div class="panel-body cloak text-center clearfix">
+            <div class="row">
+              <div class="col-sm-6">
+                <input type="text" class="input stretch" value="{{fullName}}" placeholder="Enter a name" />
+              </div>
+              <div class="col-sm-6">
+                Hi my name is {{fullName}}, and I find this is so simple!
+              </div>
+              {{#if fullName.toLowerCase() === 'great scott!'}}
+                <div class="col-xs-12 {{#if !fullName}} hide {{/if}}">
+                  <img src="assets/images/great-scott.gif"/>
+                </div>
+                <div class="col-xs-12 {{#if !fullName}} hide {{/if}}">
+                  <strong>Great Scott! I've been found...</strong>
+                </div>
+              {{/if}}
             </div>
           </div>
-        </div>
-        <div class="panel-footer">
-          <pre>router.createRoute({
-    path: <span style="color:#ad9361">'/'</span>,
-    controller: function() { },
-    view: {
-      el: <span style="color:#ad9361">'#target'</span>,
-      template: <span style="color:#ad9361">'&lt;input type="text" value="\{{fullName}}"/> Hi my name is \{{fullName}}, and I find this is so simple!'</span>
-    }
-  });
-          </pre>
+          <div class="panel-footer">
+            <pre>router.createRoute({
+  path: <span style="color:#ad9361">'/'</span>,
+  controller: function() { },
+  view: {
+    el: <span style="color:#ad9361">'#target'</span>,
+    template: <span style="color:#ad9361">'&lt;input type="text" value="\{{fullName}}"/> Hi my name is \{{fullName}}, and I find this is so simple!'</span>
+  }
+});
+            </pre>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-sm-10 center-col">
-      <div class="panel">
-        <div class="panel-heading">
-          <h1 class="title text-center">Easy Events</h1>
-        </div>
-        <div class="panel-body text-center clearfix">
-          <div class="row">
-            <div class="col-sm-6">
-              <div id="random-color" style="background-color: {{color || '#f2f2f2'}};"></div>
-            </div>
-            <div class="col-sm-6"><button class="button ghost-primary" on-click="randomColor">Click me!</button></div>
+      <div class="col-sm-10 center-col">
+        <div class="panel">
+          <div class="panel-heading">
+            <h1 class="title text-center">Easy Events</h1>
           </div>
-        </div>
-        <div class="panel-footer">
-          <pre style="background:#211e1e;color:#dadada">router.createRoute({
+          <div class="panel-body text-center clearfix">
+            <div class="row">
+              <div class="col-sm-6">
+                <div id="random-color" style="background-color: {{color || '#f2f2f2'}};"></div>
+              </div>
+              <div class="col-sm-6"><button class="button ghost-primary" on-click="randomColor">Click me!</button></div>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <pre style="background:#211e1e;color:#dadada">router.createRoute({
   path: <span style="color:#ad9361">'/'</span>,
   controller: function() { },
   view: {
@@ -77,19 +85,23 @@
     }
   }
 });
-          </pre>
+            </pre>
+          </div>
         </div>
       </div>
-    </div>
 
 
-    <div class="col-sm-10 center-col">
-      <div class="panel">
-        <div class="panel-heading">
-          <h1 class="title text-center">Get HTML from other pages</h1>
-        </div>
-        <div class="panel-body">
-          <pre>router.createRoute({
+      <div class="col-sm-10 center-col">
+        <div class="panel">
+          <div class="panel-heading">
+            <h1 class="title text-center">Get HTML from other pages</h1>
+          </div>
+          <div class="panel-body text-center">
+            <div>This will pull in content without reloading the page.</div>
+            <a href="#/example">To the example!<a>
+          </div>
+          <div class="panel-footer">
+            <pre>router.createRoute({
   path: <span style="color:#ad9361">'/'</span>,
   controller: function() { },
   view: {
@@ -100,18 +112,18 @@
     }
   }
 });
-          </pre>
+            </pre>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-sm-10 center-col">
-      <div class="panel">
-        <div class="panel-heading">
-          <h1 class="title text-center">Simple Hierarchy with built-in "caching"</h1>
-        </div>
-        <div class="panel-body">
-          <pre>router.createRoute({
+      <div class="col-sm-10 center-col">
+        <div class="panel">
+          <div class="panel-heading">
+            <h1 class="title text-center">Simple Hierarchy with built-in "caching"</h1>
+          </div>
+          <div class="panel-body">
+            <pre>router.createRoute({
   path: <span style="color:#ad9361">'/'</span>,
   controller: function() {
     console<span style="color:#a1a1ff">.log</span>(<span style="color:#ad9361">'This is the index page.'</span>);
@@ -124,23 +136,24 @@ router.createRoute({
     console<span style="color:#a1a1ff">.log</span>(<span style="color:#ad9361">'This is the child of that ^ index page.'</span>);
   }
 });
-          </pre>
+            </pre>
+          </div>
         </div>
       </div>
-    </div>
 
 
-    <div class="col-sm-10 center-col">
-      <div class="panel">
-        <div class="panel-heading">
-          <h1 class="title text-center">Progressively Enhance?</h1>
+      <div class="col-sm-10 center-col">
+        <div class="panel">
+          <div class="panel-heading">
+            <h1 class="title text-center">Progressively Enhance?</h1>
+          </div>
+          <div class="panel-body text-center">
+            Although a simple example, you could do some simple progressive enhancement using this. Turn off JavaScript and have a look!
+          </div>
+          <div class="panel-footer"></div>
         </div>
-        <div class="panel-body text-center">
-          Although a simple example, you could do some simple progressive enhancement using this. Turn off JavaScript and have a look!
-        </div>
-        <div class="panel-footer"></div>
       </div>
-    </div>
+    </section>
 
     <h1 class="coming-soon">More examples coming soon!</h1>
 
