@@ -1,4 +1,4 @@
-export default events = [
+let events = [
   'add',
   'animate',
   'detach',
@@ -35,3 +35,5 @@ export default events = [
   'update',
   'updateModel'
 ];
+
+export default events;
