@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.0.1. 
+/* LodestarJS Router - 1.0.2. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 15:54:46 GMT+0000 (GMT) 
+Published: Fri Dec 18 2015 19:22:27 GMT+0000 (GMT) 
 Commit Hash: none */
 
 (function (global, factory) {
@@ -80,7 +80,9 @@ Commit Hash: none */
     listenerActive: false
   };
   /**
-   * This initialises the config for each instance with a fresh config
+   * This initialises the config for each instance with a fresh config,
+   * also adds a global variable to the window which may be used by other libs.
+   *
    * @param  {Object} _this, this passed in from the constructore
    * @return {Void}, nothing returned
    */
@@ -88,6 +90,7 @@ Commit Hash: none */
 
     _this.routes = {};
     _this.config = merge({}, defaultConfig);
+    window.LodeVar = window.LodeVar || {};
   }
 
   /**
@@ -124,8 +127,8 @@ Commit Hash: none */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.0.1 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.1 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.0.2 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.2 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -475,6 +478,10 @@ Commit Hash: none */
 
     this.config.listenerActive = true;
 
+    docListener('click', function (e) {
+      window.LodeVar.previousPath = formatRoute.call(_this, removeOrigin(window.location.href));
+    });
+
     if (!this.config.useHistory || !hasHistory) {
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for hash changes.');
@@ -581,18 +588,13 @@ Commit Hash: none */
   var Promise = Promise || Ractive.Promise;
 
   // Returns the requested element of the target doc and removes script tags
+
   function parser(doc, options) {
 
     var el = options.container ? options.container : 'body',
         regExp = new RegExp('(<[\s\/]*script\\b[^>]*>)([^>]*)(<\/script>)', 'gi');
 
-    if (el.indexOf('#') > -1) {
-      return doc.getElementById(el.replace('#', '')).innerHTML.replace(regExp, '');
-    } else if (el.indexOf('.') > -1) {
-      return doc.getElementsByClassName(el.replace('.', ''))[0].innerHTML.replace(regExp, '');
-    } else {
-      return doc.getElementsByTagName(el)[0].innerHTML.replace(regExp, '');
-    }
+    return doc.querySelector(el).innerHTML.replace(regExp, '');
   }
 
   /**
@@ -601,6 +603,7 @@ Commit Hash: none */
    * @param  {String} options, the internal url to load page content from
    * @return {Promise}, Will return a string of the page content
    */
+
   function loadPage(options) {
 
     return new Promise(function (resolve, reject) {
@@ -654,6 +657,8 @@ Commit Hash: none */
     this.observe = function () {
       new Error('Use the observe attribute in the route object.');
     };
+
+    options.controller.call(this, this.routeData || {});
   }
 
   /**
@@ -668,6 +673,14 @@ Commit Hash: none */
     if (options.view && !options.active) {
 
       if (isObject(options.view.template) && options.view.template.url) {
+
+        if (options.view.template.notOnSame && options.view.template.url === (window.LodeVar.previousPath || options.view.template.url)) {
+
+          options.view.template = parser(document.getElementsByTagName('body')[0], options.view.template);
+
+          setup.call(this, options);
+          return;
+        }
 
         loadPage(options.view.template).then(function (template) {
 
@@ -708,7 +721,6 @@ Commit Hash: none */
         path: options.path,
         controller: function controller(routeData) {
           setupController.call(this, options);
-          options.controller.call(this, routeData || {});
         }
       });
     },

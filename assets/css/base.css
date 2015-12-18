@@ -734,7 +734,6 @@ html {
 }
 body {
   background-color: #F5F5F5;
-  scroll-behavior: smooth;
 }
 .title-section {
   color: white;
@@ -765,6 +764,9 @@ pre {
 }
 .cloak {
   color: rgba(0, 0, 0, 0) !important;
+}
+.hide {
+  display: none !important;
 }
 .panel {
   margin-top: 40px;

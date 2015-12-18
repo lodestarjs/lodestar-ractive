@@ -24,8 +24,7 @@
     "rollup-plugin-babel": "^2.2.0"
   },
   "dependencies": {
-    "lodestar-ractive": "^1.0.0",
-    "lodestar-router": "1.0.1",
+    "lodestar-ractive": "1.0.2",
     "ractive": "0.7.3"
   },
   "config": {
