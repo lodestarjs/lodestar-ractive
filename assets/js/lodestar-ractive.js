@@ -1,8 +1,7 @@
-/* LodestarJS Router - 1.0.2.
-Author: Dan J Ford
-Contributors: undefined
-Published: Fri Dec 18 2015 20:00:17 GMT+0000 (GMT)
-Commit Hash: none */
+/* LodestarJS Router - 1.0.3. 
+Author: Dan J Ford 
+Contributors: undefined 
+Published: Fri Dec 18 2015 20:39:13 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -127,8 +126,8 @@ Commit Hash: none */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.0.2 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.2 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.0.3 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.3 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -227,7 +226,8 @@ Commit Hash: none */
    */
   function resolve(path) {
 
-    if (!path) path = '/';
+    if (path === '') path = '/';
+    if (!path) return;
 
     var pointer = this.routes,
         originalPath = path,
@@ -469,7 +469,7 @@ Commit Hash: none */
    * @return {Void}, nothing returned
    */
   function listener() {
-    var _this = this;
+    var _this2 = this;
 
     if (this.config.listenerActive) return;
 
@@ -482,7 +482,7 @@ Commit Hash: none */
     this.config.listenerActive = true;
 
     docListener('click', function (e) {
-      window.LodeVar.previousPath = formatRoute.call(_this, removeOrigin(window.location.href));
+      window.LodeVar.previousPath = formatRoute.call(_this2, removeOrigin(window.location.href));
     });
 
     if (!this.config.useHistory || !hasHistory) {
@@ -490,7 +490,7 @@ Commit Hash: none */
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for hash changes.');
 
       windowListener(hasEventListener ? 'hashchange' : 'onhashchange', function () {
-        _this.resolve(formatRoute.call(_this, window.location.hash));
+        _this2.resolve(formatRoute.call(_this2, window.location.hash));
       });
     } else if (this.config.useHistory && hasHistory) {
 
@@ -499,12 +499,12 @@ Commit Hash: none */
       docListener('click', function (e) {
         var historyLink = historyClick.call(_this, e);
 
-        if ( historyLink ) {
-          _this.resolve(historyLink);
+        if (historyLink) {
+          _this2.resolve(historyLink);
         }
       });
       windowListener('popstate', function () {
-        _this.resolve(formatRoute.call(_this, window.location.pathname));
+        _this2.resolve(formatRoute.call(_this2, window.location.pathname));
       });
     }
 
