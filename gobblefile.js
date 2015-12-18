@@ -1,25 +1,25 @@
 var gobble = require( 'gobble' ),
   info = require('./package.json'),
   src = gobble( 'src' ),
-  lib;
+  lib,
+  less = gobble( 'src/less' );
 
 lib = gobble([
-  src
-    .observe( 'eslint' )
+  src.observe( 'eslint' )
     .transform( 'rollup-babel', {
-      format: 'umd',
-      transform: function ( src, path ) {
-        return src.replace( /<@version@>/g, info.version );
-      },
+      format: 'cjs',
       external: ['ractive'],
-      entry: 'main.js',
-      moduleName: 'LodeRactive',
-      dest: 'lodestar-ractive.js',
+      entry: 'js/main.js',
+      dest: 'main.js',
       banner: `/* LodestarJS Router - ${info.version}. \nAuthor: Dan J Ford \nContributors: ${info.contributors} \nPublished: ${new Date()} \nCommit Hash: ${process.env.COMMIT_HASH || 'none'} */\n`
-    })
+    }),
+  less.transform( 'less', {
+    src: 'base.less',
+    dest: 'css/main.css'
+  })
 ]);
 
+
 module.exports = gobble([
-  lib,
-  lib.transform( 'uglifyjs', { ext: '.min.js' })
+  lib
 ]);
