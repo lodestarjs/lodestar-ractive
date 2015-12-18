@@ -12,8 +12,8 @@ function setup( options ) {
     }
   }
 
-  if ( this.actions ) ractive.on( this.actions );
-  if ( this.observe ) ractive.observe( this.observe );
+  if ( options.actions ) ractive.on( options.actions );
+  if ( options.observe ) ractive.observe( options.observe );
 
   this.on = function() { throw new Error('Use the actions attribute in the route object.'); };
   this.observe = function() { new Error('Use the observe attribute in the route object.'); };
