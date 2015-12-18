@@ -4,19 +4,24 @@
   "description": "A combination of the LodestarJS-Router and RactiveJS in one place as a proof of concept, presented as a framework.",
   "scripts": {
     "start": "./node_modules/.bin/gobble",
-    "build": "rm -rf dist && ./node_modules/.bin/gobble build dist",
+    "build": "rm -rf assets && ./node_modules/.bin/gobble build assets",
     "lint": "node node_modules/eslint/bin/eslint src/"
   },
   "author": "danjford <forddj93@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015-rollup": "^1.0.0",
     "cz-conventional-changelog": "^1.1.5",
     "eslint": "^1.10.3",
-    "gobble": "^0.10.2",
-    "gobble-cli": "^0.6.0",
-    "gobble-eslint": "^0.1.0",
-    "gobble-less": "^0.3.0",
-    "gobble-rollup-babel": "^0.6.1"
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-less": "^3.0.5",
+    "gulp-rimraf": "^0.2.0",
+    "lesshat": "^3.0.2",
+    "normalize.less": "^1.0.0",
+    "rollup": "^0.21.2",
+    "rollup-plugin-babel": "^2.2.0"
   },
   "dependencies": {
     "lodestar-ractive": "^1.0.0",

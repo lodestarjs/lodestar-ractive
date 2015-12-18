@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lodestar-Ractive</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/monokai.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+
+  <main id="main-page">
+    <section class="title-section">
+
+      <h1>Lodestar-Ractive</h1>
+
+      <p>A simple combination of the LodestarJs-router and Ractive, presented as a framework.</p>
+
+      <button class="round-down" on-click="downToFirst">
+        &#x25BE;
+      </button>
+
+    </section>
+
+    <div id="first" class="col-sm-10 center-col">
+      <div class="panel">
+        <div class="panel-heading">
+          <h1 class="title text-center">Two way data-binding</h1>
+        </div>
+        <div class="panel-body cloak text-center clearfix">
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="text" class="input stretch" value="{{fullName}}" placeholder="Enter a name" />
+            </div>
+            <div class="col-sm-6">
+              Hi my name is {{fullName}}, and I find this is so simple!
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <pre>router.createRoute({
+    path: <span style="color:#ad9361">'/'</span>,
+    controller: function() { },
+    view: {
+      el: <span style="color:#ad9361">'#target'</span>,
+      template: <span style="color:#ad9361">'&lt;input type="text" value="\{{fullName}}"/> Hi my name is \{{fullName}}, and I find this is so simple!'</span>
+    }
+  });
+          </pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-10 center-col">
+      <div class="panel">
+        <div class="panel-heading">
+          <h1 class="title text-center">Easy Events</h1>
+        </div>
+        <div class="panel-body text-center clearfix">
+          <div class="row">
+            <div class="col-sm-6">
+              <div id="random-color" style="background-color: {{color || '#f2f2f2'}};"></div>
+            </div>
+            <div class="col-sm-6"><button class="button ghost-primary" on-click="randomColor">Click me!</button></div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <pre style="background:#211e1e;color:#dadada">router.createRoute({
+  path: <span style="color:#ad9361">'/'</span>,
+  controller: function() { },
+  view: {
+    el: <span style="color:#ad9361">'#target'</span>,
+    template: <span style="color:#ad9361">'&lt;div id="random-color" style="background-color: \{{color}};">&lt;/div>&lt;button on-click="randomColor">click me&lt;/button>'</span>
+  },
+  actions: {
+    randomColor: function() {
+       <span style="color:#c1c144">this</span>.set(<span style="color:#ad9361">'color'</span>, <span style="color:#ad9361">"#"</span> <span style="color:#47b8d6">+</span> Math.<span style="color:#a1a1ff">random</span>().<span style="color:#a1a1ff">toString</span>(<span style="color:#ccc">16</span>).<span style="color:#a1a1ff">slice</span>(<span style="color:#ccc">2</span>, <span style="color:#ccc">8</span>));
+    }
+  }
+});
+          </pre>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-sm-10 center-col">
+      <div class="panel">
+        <div class="panel-heading">
+          <h1 class="title text-center">Get HTML from other pages</h1>
+        </div>
+        <div class="panel-body">
+          <pre>router.createRoute({
+  path: <span style="color:#ad9361">'/'</span>,
+  controller: function() { },
+  view: {
+    el: <span style="color:#ad9361">'#target'</span>,
+    template: {
+      url: <span style="color:#ad9361">'/blog'</span>,
+      container: <span style="color:#ad9361">'main'</span>
+    }
+  }
+});
+          </pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-10 center-col">
+      <div class="panel">
+        <div class="panel-heading">
+          <h1 class="title text-center">Simple Hierarchy with built-in "caching"</h1>
+        </div>
+        <div class="panel-body">
+          <pre>router.createRoute({
+  path: <span style="color:#ad9361">'/'</span>,
+  controller: function() {
+    console<span style="color:#a1a1ff">.log</span>(<span style="color:#ad9361">'This is the index page.'</span>);
+  }
+});
+
+router.createRoute({
+  path: <span style="color:#ad9361">'[/]blog'</span>,
+  controller: function() {
+    console<span style="color:#a1a1ff">.log</span>(<span style="color:#ad9361">'This is the child of that ^ index page.'</span>);
+  }
+});
+          </pre>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-sm-10 center-col">
+      <div class="panel">
+        <div class="panel-heading">
+          <h1 class="title text-center">Progressively Enhance?</h1>
+        </div>
+        <div class="panel-body text-center">
+          Although a simple example, you could do some simple progressive enhancement using this. Turn off JavaScript and have a look!
+        </div>
+        <div class="panel-footer"></div>
+      </div>
+    </div>
+
+    <h1 class="coming-soon">More examples coming soon!</h1>
+
+  </main>
+
+  <script type="text/javascript" src="/assets/js/ractive.js"></script>
+  <script type="text/javascript" src="/assets/js/lodestar-ractive.js"></script>
+  <script type="text/javascript" src="/assets/js/main.js"></script>
+</body>
+</html>
