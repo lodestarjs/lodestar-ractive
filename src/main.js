@@ -29,7 +29,6 @@ LodeRactive.prototype = {
       path: options.path,
       controller: function ( routeData ) {
         setupController.call( this, options );
-        options.controller.call( this, routeData || {} );
       }
     });
   },
