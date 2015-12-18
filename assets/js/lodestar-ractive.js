@@ -461,7 +461,7 @@ Commit Hash: none */
 
     e.preventDefault();
 
-    return formattedRoute;
+    return formattedRoute === '' ? '/' : formattedRoute;
   }
 
   /**
