@@ -39,3 +39,5 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['copy', 'less', 'babel', 'watch']);
+
+gulp.task('build', ['copy', 'less', 'babel']);

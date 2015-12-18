@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "A combination of the LodestarJS-Router and RactiveJS in one place as a proof of concept, presented as a framework.",
   "scripts": {
-    "start": "./node_modules/.bin/gobble",
-    "build": "rm -rf assets && ./node_modules/.bin/gobble build assets",
+    "start": "./node_modules/.bin/gulp",
+    "build": "rm -rf assets && ./node_modules/.bin/gulp build",
     "lint": "node node_modules/eslint/bin/eslint src/"
   },
   "author": "danjford <forddj93@gmail.com>",
