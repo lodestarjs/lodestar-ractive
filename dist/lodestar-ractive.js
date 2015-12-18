@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.0.3. 
+/* LodestarJS Router - 1.0.4. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 23:50:20 GMT+0000 (GMT) */
+Published: Fri Dec 18 2015 23:57:42 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -126,8 +126,8 @@ Published: Fri Dec 18 2015 23:50:20 GMT+0000 (GMT) */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.0.3 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.3 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.0.4 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.4 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
