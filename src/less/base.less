@@ -1,0 +1,85 @@
+@import 'node_modules/lesshat/build/lesshat.less';
+@import "node_modules/normalize.less/normalize.less";
+@import 'variables.less';
+@import 'mixins/grid.less';
+@import 'mixins/clearfix.less';
+@import 'fonts.less';
+@import 'panels.less';
+@import 'inputs.less';
+@import 'buttons.less';
+@import 'position.less';
+@import 'scaffolding.less';
+
+
+html {
+  box-sizing:border-box;
+}
+
+*, *:before, *:after {
+  box-sizing:inherit
+}
+
+body {
+  background-color: #F5F5F5;
+  scroll-behavior: smooth;
+}
+
+.title-section {
+  color: white;
+  padding: 25vh 15px;
+  padding-bottom: 20vh;
+  text-align: center;
+  overflow: hidden;
+  font-family: TitilliumText, Arial;
+  background: linear-gradient(rgba(32, 42, 68, 0.5), rgba(32, 42, 68, 0.5)), url('/assets/images/stars.jpg') no-repeat center fixed;
+  background-size: cover;
+  h1 {
+    font-size: 50px;
+  }
+  p {
+    font-size: 20px;
+  }
+}
+
+pre {
+  border-radius: 5px;
+  background:#211e1e;
+  color:#dadada;
+  padding: 10px;
+}
+
+#random-color {
+  height: 100px;
+  display: block;
+  width: 100%;
+}
+
+.cloak {
+  color: rgba(0, 0, 0, 0) !important;
+}
+
+.panel {
+  margin-top: 40px;
+}
+
+.coming-soon {
+  color: #828282;
+  text-align: center;
+  margin: 40px 0;
+}
+
+.round-down {
+  border: 1px solid white;
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 30px;
+  margin-top: 50px;
+  .transition(all 150ms linear);
+  &:hover {
+    color: #1D3254;
+    background-color: white;
+  }
+}

@@ -1,0 +1,22 @@
+.button {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #808080;
+  box-sizing: border-box;
+  box-shadow: none;
+  border-radius: 2px;
+  &.stretch {
+    width: 100%;
+  }
+}
+
+.ghost-primary {
+  .transition(all 150ms linear);
+  &:hover {
+    border: 1px solid @main-blue;
+    background-color: @main-blue;
+    color: white;
+  }
+}

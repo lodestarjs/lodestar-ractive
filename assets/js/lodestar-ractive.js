@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.0.0. 
-Author: Dan J Ford 
-Contributors: undefined 
-Published: Fri Dec 18 2015 03:35:41 GMT+0000 (GMT) 
+/* LodestarJS Router - 1.0.0.
+Author: Dan J Ford
+Contributors: undefined
+Published: Fri Dec 18 2015 03:35:41 GMT+0000 (GMT)
 Commit Hash: none */
 
 (function (global, factory) {
@@ -645,8 +645,8 @@ Commit Hash: none */
       }
     }
 
-    if (this.actions) ractive.on(this.actions);
-    if (this.observe) ractive.observe(this.observe);
+    if (options.actions) ractive.on(options.actions);
+    if (options.observe) ractive.observe(options.observe);
 
     this.on = function () {
       throw new Error('Use the actions attribute in the route object.');
