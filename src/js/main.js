@@ -30,7 +30,7 @@ router.createRoute({
   view: {
     el: '#examples',
     template: {
-      url: '/example',
+      url: '/lodestar-ractive/example',
       container: '#examples',
       notOnSame: true
     }
@@ -52,7 +52,7 @@ router.createRoute({
   view: {
     el: '#main-page',
     template: {
-      url: '/',
+      url: '/lodestar-ractive',
       container: '#main-page',
       notOnSame: true
     }
