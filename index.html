@@ -102,13 +102,14 @@
           </div>
           <div class="panel-footer">
             <pre>router.createRoute({
-  path: <span style="color:#ad9361">'/'</span>,
+  path: <span style="color:#ad9361">'/example'</span>,
   controller: function() { },
   view: {
     el: <span style="color:#ad9361">'#target'</span>,
     template: {
-      url: <span style="color:#ad9361">'/blog'</span>,
-      container: <span style="color:#ad9361">'main'</span>
+      url: <span style="color:#ad9361">'/example'</span>,
+      container: <span style="color:#ad9361">'main'</span>,
+      notOnSame: <span style="color:#ad9361">true</span> <span style="color:#989898;">// Makes sure not to execute the request when on the page already</span>
     }
   }
 });
