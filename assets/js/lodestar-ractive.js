@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.0.2. 
-Author: Dan J Ford 
-Contributors: undefined 
-Published: Fri Dec 18 2015 20:00:17 GMT+0000 (GMT) 
+/* LodestarJS Router - 1.0.2.
+Author: Dan J Ford
+Contributors: undefined
+Published: Fri Dec 18 2015 20:00:17 GMT+0000 (GMT)
 Commit Hash: none */
 
 (function (global, factory) {
@@ -227,7 +227,7 @@ Commit Hash: none */
    */
   function resolve(path) {
 
-    if (!path) return;
+    if (!path) path = '/';
 
     var pointer = this.routes,
         originalPath = path,
