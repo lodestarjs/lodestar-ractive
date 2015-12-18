@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.0.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 03:29:04 GMT+0000 (GMT) 
+Published: Fri Dec 18 2015 03:35:41 GMT+0000 (GMT) 
 Commit Hash: none */
 
 (function (global, factory) {
