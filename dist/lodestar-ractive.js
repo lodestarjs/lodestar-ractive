@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.0.3. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 21:37:30 GMT+0000 (GMT) */
+Published: Fri Dec 18 2015 23:46:45 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -646,6 +646,8 @@ Published: Fri Dec 18 2015 21:37:30 GMT+0000 (GMT) */
     });
   }
 
+  var events$1 = events = ['add', 'animate', 'detach', 'find', 'findAll', 'findAllComponents', 'findComponent', 'findContainer', 'findParent', 'fire', 'get', 'insert', 'link', 'merge', 'off', 'pop', 'push', 'render', 'reset', 'resetPartial', 'resetTemplate', 'reverse', 'set', 'shift', 'sort', 'splice', 'subtract', 'teardown', 'toggle', 'toHTML', 'unlink', 'unrender', 'unshift', 'update', 'updateModel'];
+
   function setup(options) {
 
     var ractive = new Ractive(options.view);
@@ -653,6 +655,13 @@ Published: Fri Dec 18 2015 21:37:30 GMT+0000 (GMT) */
     for (var key in ractive) {
       if (ractive.hasOwnProperty(key) && key !== 'data') {
         this[key] = ractive[key];
+      }
+    }
+
+    // Ractive doesn't let us touch data, so we'll have to manually add the data methods
+    for (var i = 0, ii = events$1.length; i < ii; i++) {
+      if (typeof ractive[events$1[i]] !== 'undefined') {
+        this[[events$1[i]]] = ractive[events$1[i]];
       }
     }
 
