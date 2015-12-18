@@ -1,6 +1,6 @@
 'use strict';
 
-var router = new LodeRactive({ DEBUG: false, useHistory: true });
+var router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: window.location.href.indexOf('lodestar-ractive') > -1 ? '/lodestar-ractive' : '' });
 
 function clearCloak() {
 
