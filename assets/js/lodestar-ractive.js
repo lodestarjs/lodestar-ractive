@@ -497,7 +497,11 @@ Commit Hash: none */
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for clicks or popstate.');
 
       docListener('click', function (e) {
-        _this.resolve(historyClick.call(_this, e));
+        var historyLink = historyClick.call(_this, e);
+
+        if ( historyLink ) {
+          _this.resolve(historyLink);
+        }
       });
       windowListener('popstate', function () {
         _this.resolve(formatRoute.call(_this, window.location.pathname));
