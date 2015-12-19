@@ -860,6 +860,20 @@ th {
   overflow: hidden;
   display: block;
 }
+.note {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  margin: 10px;
+  background-color: #737ED8;
+  color: white;
+  border-radius: 2px;
+  z-index: 100;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
 html {
   box-sizing: border-box;
 }
