@@ -12,18 +12,49 @@ body {
 
 .title-section {
   color: white;
-  padding: 25vh 15px;
+  padding: 0 15px;
   padding-bottom: 20vh;
   text-align: center;
   overflow: hidden;
   font-family: TitilliumText, Arial;
-  background: linear-gradient(rgba(32, 42, 68, 0.5), rgba(32, 42, 68, 0.5)), url('/assets/images/stars.jpg') no-repeat center fixed;
+  background: linear-gradient(rgba(32, 42, 68, 0.5), rgba(32, 42, 68, 0.5)), url('/lodestar-ractive/assets/images/stars.jpg') no-repeat center fixed;
   background-size: cover;
   h1 {
+    padding-top: 20vh;
     font-size: 50px;
+  }
+  h2 {
+    font-weight: lighter;
+    font-size: 40px;
   }
   p {
     font-size: 20px;
+  }
+  nav {
+    padding: 10px;
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      float: right;
+      list-style-type: none;
+    }
+    a {
+      display: block;
+      text-decoration: none;
+      color: white;
+      padding: 5px 15px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
+      &:hover {
+        border-bottom: 1px solid white;
+      }
+    }
+  }
+  &.stretch {
+    position: absolute;
+    height: 100%;
+    width: 100%;
   }
 }
 
@@ -32,6 +63,7 @@ pre {
   background:#211e1e;
   color:#dadada;
   padding: 10px;
+  margin: 0;
 }
 
 #random-color {

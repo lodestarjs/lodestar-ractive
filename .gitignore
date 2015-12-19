@@ -1,4 +1,4 @@
+_site
+.sass-cach
+.DS_Store
 node_modules
-.DS_STORE
-.gobble
-.gobble-build
