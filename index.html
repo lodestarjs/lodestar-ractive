@@ -10,18 +10,20 @@
   <main id="main-page">
     <section class="title-section">
 
-      <h1>Lodestar-Ractive</h1>
+      <div class="container">
+        <h1>Lodestar-Ractive</h1>
 
-      <p>A simple combination of the LodestarJs-router and Ractive, presented as a framework.</p>
+        <p>A simple combination of the LodestarJs-router and Ractive, presented as a framework.</p>
 
-      <button class="round-down" on-click="downToFirst">
-        &#x25BE;
-      </button>
+        <button class="round-down" on-click="downToFirst">
+          &#x25BE;
+        </button>
+      </div>
 
     </section>
 
-    <section id="examples">
-      <div id="first" class="col-sm-10 center-col">
+    <section id="examples first">
+      <div id="first" class="container">
         <div class="panel">
           <div class="panel-heading">
             <h1 class="title text-center">Two way data-binding</h1>
@@ -58,7 +60,7 @@
         </div>
       </div>
 
-     <div id="first" class="col-sm-10 center-col">
+     <div class="container">
         <div class="panel">
           <div class="panel-heading">
             <h1 class="title text-center">Simple Todo MVC</h1>
@@ -68,21 +70,64 @@
               <form on-submit="addTodo:{{todo.input}}">
                 <input type="text" value="{{todo.input}}" placeholder="What do you have todo?" />
               </form>
-              <ul class="{{#unless todo.items.length}} hide {{/unless}}">
+              <ul class="clearfix {{#unless todo.items.length}} hide {{/unless}}">
                 {{#each todo.items:i}}
-                  <li>
-                    <span class="{{this.completed ? 'completed': ''}}">{{task}}</span>
-                    <button on-click="set(@keypath + '.completed', !completed)">{{#if completed}}undo{{else}}complete{{/if}}</button>
-                    <button on-click="splice('todo.items', @index, 1)">delete</button>
+                  <li class="clearfix">
+                    <div class="col-xs-6 text-left">
+                      <span class="{{this.completed ? 'completed': ''}}">{{task}}</span>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <button on-click="set(@keypath + '.completed', !completed)" class="button {{this.completed ? 'button-secondary': 'button-primary'}}">{{#if completed}}undo{{else}}complete{{/if}}</button>
+                      <button on-click="splice('todo.items', @index, 1)" class="button button-warn">delete</button>
+                    </div>
                   </li>
                 {{/each}}
               </ul>
+              <strong class="text-center cloak">{{todo.items.length}} / {{todo.max}} </strong>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <div class="tabbed-code">
+              <ul class="tabs">
+                <li><a href="#example-one" class="active" on-click="activeTab">HTML</a></li>
+                <li><a href="#example-two" on-click="activeTab">JavaScript</a></li>
+              </ul>
+              <div class="code-wrap">
+
+                <div id="example-one" class="active">
+                  <iframe src="todo-mvc-example.html"></iframe>
+
+                </div>
+
+                <div id="example-two" style="background:#211e1e;color:#dadada; ">
+<pre style="background:#211e1e;color:#dadada">router.createRoute({
+  path: <span style="color:#ad9361">'/'</span>,
+  controller: function() { },
+  view: {
+    el: <span style="color:#ad9361">'#main-page'</span>,
+    data: { <span style="color:#ad9361">'todo'</span>: { <span style="color:#ad9361">'items'</span>: [], <span style="color:#ad9361">'max'</span>: <span style="color:#ccc">5</span> } },
+    template: document.querySelector(<span style="color:#ad9361">'#todo'</span>).innerHTML
+  },
+  actions: {
+    addTodo: function ( event, inputVal ) {
+      <span style="color:#6969fa;font-weight:700">if</span> ( inputVal.length <span style="color:#47b8d6">&amp;</span><span style="color:#47b8d6">&amp;</span> <span style="color:#c1c144">this</span>.get(<span style="color:#ad9361">'todo.items'</span>).length <span style="color:#47b8d6">&lt;</span> <span style="color:#c1c144">this</span>.get(<span style="color:#ad9361">'todo.max'</span>) ) {
+        <span style="color:#c1c144">this</span>.<span style="color:#a1a1ff">push</span>( <span style="color:#ad9361">'todo.items'</span>, { task: inputVal } );
+        <span style="color:#c1c144">this</span>.set(<span style="color:#ad9361">'todo.input'</span>, <span style="color:#ad9361">''</span>);
+      }
+      event.original.preventDefault();
+    }
+});
+</pre>
+                </div>
+
+              </div>
+
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-sm-10 center-col">
+      <div class="container">
         <div class="panel">
           <div class="panel-heading">
             <h1 class="title text-center">Easy Events</h1>
@@ -92,7 +137,7 @@
               <div class="col-sm-6">
                 <div id="random-color" style="background-color: {{color || '#f2f2f2'}};"></div>
               </div>
-              <div class="col-sm-6"><button class="button ghost-primary" on-click="randomColor">Click me!</button></div>
+              <div class="col-sm-6"><button class="button ghost-primary thicker stretch" on-click="randomColor">Click me!</button></div>
             </div>
           </div>
           <div class="panel-footer">
@@ -115,7 +160,7 @@
       </div>
 
 
-      <div class="col-sm-10 center-col">
+      <div class="container">
         <div class="panel">
           <div class="panel-heading">
             <h1 class="title text-center">Get HTML from other pages</h1>
@@ -142,7 +187,7 @@
         </div>
       </div>
 
-      <div class="col-sm-10 center-col">
+      <div class="container">
         <div class="panel">
           <div class="panel-heading">
             <h1 class="title text-center">Simple Hierarchy with built-in "caching"</h1>
@@ -167,7 +212,7 @@ router.createRoute({
       </div>
 
 
-      <div class="col-sm-10 center-col">
+      <div class="container">
         <div class="panel">
           <div class="panel-heading">
             <h1 class="title text-center">Progressively Enhance?</h1>

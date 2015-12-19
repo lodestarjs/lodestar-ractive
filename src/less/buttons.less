@@ -1,6 +1,6 @@
 .button {
-  padding: 10px 15px;
-  margin-bottom: 10px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
   background-color: #fff;
   border: 1px solid #ddd;
   color: #808080;
@@ -10,6 +10,10 @@
   &.stretch {
     width: 100%;
   }
+  &.thicker {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+  }
 }
 
 .ghost-primary {
@@ -18,5 +22,35 @@
     border: 1px solid @main-blue;
     background-color: @main-blue;
     color: white;
+  }
+}
+
+.button-primary {
+  background-color: @primary;
+  border: 1px solid @primary;
+  color: white;
+  .transition(opacity 150ms linear);
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.button-secondary {
+  background-color: @secondary;
+  border: 1px solid @secondary;
+  color: white;
+  .transition(opacity 150ms linear);
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.button-warn {
+  background-color: @danger;
+  border: 1px solid @danger;
+  color: white;
+  .transition(opacity 150ms linear);
+  &:hover {
+    opacity: 0.6;
   }
 }
