@@ -90,6 +90,7 @@ router.createRoute({
       event.node.classList.add('active');
 
       event.original.preventDefault();
+      event.original.stopPropagation();
     }
   }
 });
