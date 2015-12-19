@@ -1,0 +1,37 @@
+---
+layout: default
+---
+
+<section class="title-section">
+
+  <h1>Lodestar-Ractive</h1>
+
+  <p>A simple combination of the LodestarJs-router and Ractive, presented as a framework.</p>
+
+</section>
+<section id="examples">
+
+  <div id="first" class="col-sm-10 center-col">
+    <div class="panel">
+      <div class="panel-body clearfix">
+        <div class="col-xs-12 text-center">
+          <h1>This is an example of content loaded from another page</h1>
+
+            <p>
+              See the framework is still going,
+            </p>
+            <h4 class="cloak">
+              {%raw-%}
+              Time: {{ time }}
+              {%endraw-%}
+            </h4>
+            <a href="{{ "/" | prepend: site.baseurl }}" class="text-center">Go back home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<h1 class="coming-soon">More examples coming soon!</h1>

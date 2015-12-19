@@ -1,0 +1,10 @@
+.grid(@breakpoint; @columns; @index: 0) when (@index < @columns) {
+
+  @gridNumber: @index + 1;
+
+  .col-@{breakpoint}-@{gridNumber} {
+    width: percentage(8.33333333333333 * @gridNumber) / 100;
+  }
+
+  .grid(@breakpoint; @columns; (@gridNumber));
+}

@@ -1,0 +1,28 @@
+---
+layout: second
+---
+
+
+  {% highlight html %}
+  {%raw-%}
+  <div id="todo" class="todo-list">
+    <form on-submit="addTodo:{{todo.input}}">
+      <input type="text" value="{{todo.input}}" placeholder="What do you have todo?" />
+    </form>
+    <ul class="clearfix {{#unless todo.items.length}} hide {{/unless}}">
+      {{#each todo.items:i}}
+        <li class="clearfix">
+          <div class="col-xs-6 text-left">
+            <span class="{{this.completed ? 'completed': ''}}">{{task}}</span>
+          </div>
+          <div class="col-xs-6 text-right">
+            <button on-click="set(@keypath + '.completed', !completed)" class="button {{this.completed ? 'button-secondary': 'button-primary'}}">{{#if completed}}undo{{else}}complete{{/if}}</button>
+            <button on-click="splice('todo.items', @index, 1)" class="button button-warn">delete</button>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+    <strong class="text-center cloak">{{todo.items.length}} / {{todo.max}} </strong>
+  </div>
+  {%endraw-%}
+  {% endhighlight %}

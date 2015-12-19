@@ -1,0 +1,57 @@
+
+.tabs {
+  background-color: #484848;
+  padding: 0;
+  margin: 0;
+  .clearfix();
+  li {
+    float: left;
+    list-style-type: none;
+    a {
+      display: block;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      .transition(background-color 150ms linear);
+      &.active {
+        background-color: #211E1E;
+      }
+    }
+  }
+}
+
+.code-wrap {
+  position: relative;
+  min-height: 250px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  [id*='example-'] {
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    &.active, &:target {
+      display: block;
+    }
+  }
+  pre, iframe {
+    margin-top: 0;
+    border: 0;
+    border-bottom: 1px solid #fff; // For when js is disabled
+    border-radius: 0;
+  }
+  iframe {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-height: 200px;
+    overflow: hidden;
+    display: block;
+    background-color: #211E1E;
+  }
+}
+
+.iframe-page pre {
+  border-radius: 0;
+}

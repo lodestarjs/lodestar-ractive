@@ -1,0 +1,42 @@
+---
+layout: default
+---
+
+<section class="title-section">
+
+  <nav>
+    <ul class="clearfix">
+      <li>
+        <a href="https://github.com/lodestarjs/lodestar-ractive" target="_blank">Github</a>
+      </li>
+      <li>
+        <a href="/tutorials">Tutorials</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Lodestar-Ractive</h1>
+
+    <p>A simple combination of the LodestarJs-router and Ractive, presented as a framework.</p>
+
+    <button class="round-down" on-click="downToFirst">
+      &#x25BE;
+    </button>
+  </div>
+
+</section>
+
+<section id="examples">
+  {% for post in site.categories.example %}
+
+    <div class="container">
+      {{post.content}}
+    </div>
+
+  {% endfor %}
+</section>
+
+<h1 class="coming-soon">More examples coming soon!</h1>
+
+</main>
