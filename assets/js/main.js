@@ -1,6 +1,8 @@
 'use strict';
 
-var router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: window.location.href.indexOf('lodestar-ractive') > -1 ? '/lodestar-ractive' : '' });
+var base = '/lodestar-ractive';
+
+var router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: base });
 
 function clearCloak() {
 
@@ -23,17 +25,38 @@ function scrollTo(element, to, duration) {
 }
 
 router.createRoute({
-  path: '/example',
+  path: '/tutorials',
+  controller: function controller() {},
+  view: {
+    el: '#main-page',
+    template: {
+      url: base + '/tutorials',
+      container: '#main-page',
+      notOnSame: true
+    }
+  }
+});
+
+router.createRoute({
+  path: '/load-example',
   controller: function controller() {
+    var _this = this;
 
     clearCloak();
+
+    setInterval(function () {
+      _this.set('time', new Date());
+    }, 1000);
   },
   view: {
     el: '#examples',
     template: {
-      url: '/lodestar-ractive/example',
+      url: base + '/load-example',
       container: '#examples',
       notOnSame: true
+    },
+    data: {
+      'time': new Date()
     }
   },
   actions: {
@@ -46,12 +69,12 @@ router.createRoute({
 router.createRoute({
   path: '/',
   controller: function controller() {
-    var _this = this;
+    var _this2 = this;
 
     clearCloak();
 
     window.addEventListener("beforeunload", function () {
-      localStorage.indexData = JSON.stringify(_this.get());
+      localStorage.indexData = JSON.stringify(_this2.get());
     });
   },
   view: {
@@ -59,7 +82,7 @@ router.createRoute({
     data: {},
     data: localStorage.indexData ? JSON.parse(localStorage.indexData) : { 'todo': { 'items': [], 'max': 5 } },
     template: {
-      url: '/lodestar-ractive',
+      url: base || '/',
       container: '#main-page',
       notOnSame: true
     }
@@ -69,7 +92,7 @@ router.createRoute({
       this.set('color', "#" + Math.random().toString(16).slice(2, 8));
     },
     downToFirst: function downToFirst() {
-      scrollTo(document.body, document.getElementById('first').offsetTop, 600);
+      scrollTo(document.body, document.querySelectorAll('.panel')[0].offsetTop, 600);
     },
     addTodo: function addTodo(event, inputVal) {
       if (inputVal.length && this.get('todo.items').length < this.get('todo.max')) {

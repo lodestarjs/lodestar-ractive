@@ -1,32 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>TODO MVC example</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/base.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
-<body>
+---
+layout: second
+---
 
-  <pre style="background:#211e1e;color:#dadada; margin:0; border-radius: 0;"><span style="color:#858ef4">&lt;div id=<span style="color:#ad9361">"todo"</span> class=<span style="color:#ad9361">"todo-list"</span>></span>
-    <span style="color:#858ef4">&lt;form on-submit=<span style="color:#ad9361">"addTodo:{{todo.input}}"</span>></span>
-      <span style="color:#858ef4">&lt;input type=<span style="color:#ad9361">"text"</span> value=<span style="color:#ad9361">"{{todo.input}}"</span> placeholder=<span style="color:#ad9361">"What do you have todo?"</span> /></span>
-    <span style="color:#858ef4">&lt;/form></span>
-    <span style="color:#858ef4">&lt;ul class=<span style="color:#ad9361">"clearfix {{#unless todo.items.length}} hide {{/unless}}"</span>></span>
+
+  {% highlight html %}
+  {%raw-%}
+  <div id="todo" class="todo-list">
+    <form on-submit="addTodo:{{todo.input}}">
+      <input type="text" value="{{todo.input}}" placeholder="What do you have todo?" />
+    </form>
+    <ul class="clearfix {{#unless todo.items.length}} hide {{/unless}}">
       {{#each todo.items:i}}
-        <span style="color:#858ef4">&lt;li class=<span style="color:#ad9361">"clearfix"</span>></span>
-          <span style="color:#858ef4">&lt;div class=<span style="color:#ad9361">"col-xs-6 text-left"</span>></span>
-            <span style="color:#858ef4">&lt;span class=<span style="color:#ad9361">"{{this.completed ? <span style="color:#ad9361">'completed'</span>: <span style="color:#ad9361">''</span>}}"</span>></span>{{task}}<span style="color:#858ef4">&lt;/span></span>
-          <span style="color:#858ef4">&lt;/div></span>
-          <span style="color:#858ef4">&lt;div class=<span style="color:#ad9361">"col-xs-6 text-right"</span>></span>
-            <span style="color:#858ef4">&lt;button on-click=<span style="color:#ad9361">"set(@keypath + '.completed', !completed)"</span> class=<span style="color:#ad9361">"button {{this.completed ? <span style="color:#ad9361">'button-secondary'</span>: <span style="color:#ad9361">'button-primary'</span>}}"</span>></span>{{#<span style="color:#6969fa;font-weight:700">if</span> completed}}undo{{<span style="color:#6969fa;font-weight:700">else</span>}}complete{{/<span style="color:#6969fa;font-weight:700">if</span>}}<span style="color:#858ef4">&lt;/button></span>
-            <span style="color:#858ef4">&lt;button on-click=<span style="color:#ad9361">"splice('todo.items', @index, 1)"</span> class=<span style="color:#ad9361">"button button-warn"</span>></span>delete<span style="color:#858ef4">&lt;/button></span>
-          <span style="color:#858ef4">&lt;/div></span>
-        <span style="color:#858ef4">&lt;/li></span>
+        <li class="clearfix">
+          <div class="col-xs-6 text-left">
+            <span class="{{this.completed ? 'completed': ''}}">{{task}}</span>
+          </div>
+          <div class="col-xs-6 text-right">
+            <button on-click="set(@keypath + '.completed', !completed)" class="button {{this.completed ? 'button-secondary': 'button-primary'}}">{{#if completed}}undo{{else}}complete{{/if}}</button>
+            <button on-click="splice('todo.items', @index, 1)" class="button button-warn">delete</button>
+          </div>
+        </li>
       {{/each}}
-    <span style="color:#858ef4">&lt;/ul></span>
-    <span style="color:#858ef4">&lt;strong class=<span style="color:#ad9361">"text-center cloak"</span>></span>{{todo.items.length}} / {{todo.max}} <span style="color:#858ef4">&lt;/strong></span>
-  <span style="color:#858ef4">&lt;/div></span>
-  </pre>
-
-</body>
-</html>
+    </ul>
+    <strong class="text-center cloak">{{todo.items.length}} / {{todo.max}} </strong>
+  </div>
+  {%endraw-%}
+  {% endhighlight %}

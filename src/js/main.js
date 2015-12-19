@@ -1,4 +1,6 @@
-let router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: (window.location.href.indexOf('lodestar-ractive') > -1 ? '/lodestar-ractive' : '' )});
+let base ='/lodestar-ractive';
+
+let router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: base });
 
 function clearCloak() {
 
@@ -21,18 +23,38 @@ function scrollTo(element, to, duration) {
 }
 
 router.createRoute({
-  path: '/example',
-  controller: () => {
+  path: '/tutorials',
+  controller: () => { },
+  view: {
+    el: '#main-page',
+    template: {
+      url: base + '/tutorials',
+      container: '#main-page',
+      notOnSame: true
+    }
+  },
+});
+
+router.createRoute({
+  path: '/load-example',
+  controller: function() {
 
     clearCloak();
+
+    setInterval(() => {
+      this.set('time', new Date());
+    }, 1000);
 
   },
   view: {
     el: '#examples',
     template: {
-      url: '/lodestar-ractive/example',
+      url: base + '/load-example',
       container: '#examples',
       notOnSame: true
+    },
+    data: {
+      'time': new Date()
     }
   },
   actions: {
@@ -58,7 +80,7 @@ router.createRoute({
     data: {},
     data: (localStorage.indexData ? JSON.parse(localStorage.indexData) : { 'todo': { 'items': [], 'max': 5 } }),
     template: {
-      url: '/lodestar-ractive',
+      url: base || '/',
       container: '#main-page',
       notOnSame: true
     }
@@ -68,7 +90,7 @@ router.createRoute({
       this.set('color', "#" + Math.random().toString(16).slice(2, 8));
     },
     downToFirst: () => {
-      scrollTo(document.body, document.getElementById('first').offsetTop, 600);
+      scrollTo(document.body, document.querySelectorAll('.panel')[0].offsetTop, 600);
     },
     addTodo: function ( event, inputVal ) {
       if ( inputVal.length && this.get('todo.items').length < this.get('todo.max') ) {

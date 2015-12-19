@@ -410,6 +410,9 @@ th {
 .panel .panel-footer {
   padding: 15px;
 }
+.panel .panel-body p:first-child {
+  margin-top: 0;
+}
 .panel .panel-heading .title {
   padding: 0;
   margin: 0;
@@ -850,15 +853,19 @@ th {
   margin-top: 0;
   border: 0;
   border-bottom: 1px solid #fff;
+  border-radius: 0;
 }
 .code-wrap iframe {
   padding: 0;
   margin: 0;
   width: 100%;
   min-height: 200px;
-  border-radius: 2px;
   overflow: hidden;
   display: block;
+  background-color: #211E1E;
+}
+.iframe-page pre {
+  border-radius: 0;
 }
 .note {
   position: fixed;
@@ -887,25 +894,57 @@ body {
 }
 .title-section {
   color: white;
-  padding: 25vh 15px;
+  padding: 0 15px;
   padding-bottom: 20vh;
   text-align: center;
   overflow: hidden;
   font-family: TitilliumText, Arial;
-  background: linear-gradient(rgba(32, 42, 68, 0.5), rgba(32, 42, 68, 0.5)), url('/assets/images/stars.jpg') no-repeat center fixed;
+  background: linear-gradient(rgba(32, 42, 68, 0.5), rgba(32, 42, 68, 0.5)), url('/lodestar-ractive/assets/images/stars.jpg') no-repeat center fixed;
   background-size: cover;
 }
 .title-section h1 {
+  padding-top: 20vh;
   font-size: 50px;
+}
+.title-section h2 {
+  font-weight: lighter;
+  font-size: 40px;
 }
 .title-section p {
   font-size: 20px;
+}
+.title-section nav {
+  padding: 10px;
+}
+.title-section nav ul {
+  padding: 0;
+  margin: 0;
+}
+.title-section nav li {
+  float: right;
+  list-style-type: none;
+}
+.title-section nav a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  padding: 5px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+.title-section nav a:hover {
+  border-bottom: 1px solid white;
+}
+.title-section.stretch {
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 pre {
   border-radius: 5px;
   background: #211e1e;
   color: #dadada;
   padding: 10px;
+  margin: 0;
 }
 #random-color {
   height: 100px;
@@ -944,4 +983,20 @@ pre {
 .round-down:hover {
   color: #1D3254;
   background-color: white;
+}
+/**
+ * Syntax highlighting styles
+ */
+pre code {
+  color: #dadada;
+}
+pre code .s1 {
+  color: #ad9361;
+}
+pre code .kd {
+  color: #5CD7F1;
+}
+pre code .nt,
+pre code .na {
+  color: #858ef4;
 }

@@ -1,0 +1,12 @@
+# Site settings
+title: Lodestar-Ractive
+description: A simple combination of the LodestarJs-router and Ractive, presented as a framework.
+baseurl: "/lodestar-ractive" # the subpath of your site, e.g. /blog/
+url: "http://lodestarjs.github.io" # the base hostname & protocol for your site
+twitter_username: jekyllrb
+permalink: /:categories/:title
+excerpt_separator: ""
+highlighter: pygments
+exclude: ['node_modules', 'src']
+# Build settings
+markdown: kramdown
