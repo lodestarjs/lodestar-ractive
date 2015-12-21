@@ -10,14 +10,14 @@ categories: example
   <div class="panel-heading">
     <h1 class="title text-center">{{ page.title }}</h1>
   </div>
-  <div class="panel-body cloak text-center clearfix">
+  <div class="panel-body text-center clearfix">
     {%raw-%}
       <div class="row">
         <div class="col-sm-6">
-          <input type="text" class="input stretch" placeholder="Enter a name" value="{{fullName}}">
+          <input type="text" class="input stretch cloak" placeholder="Enter a name" value="{{fullName}}">
         </div>
         <div class="col-sm-6">
-          Hi my name is {{fullName}}, and I find this is so simple!
+          Hi my name is <span class="cloak">{{fullName}}</span>, and I find this is so simple!
         </div>
         {{#if fullName.toLowerCase() === 'great scott!'}}
           <div class="col-xs-12 {{#if !fullName}} hide {{/if}}">
