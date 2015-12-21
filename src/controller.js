@@ -5,20 +5,22 @@ import { logger }  from 'lodestar-router/src/utils/log';
 
 function setup( options ) {
 
-  let controllerOpts = options.controller ? options.controller : {};
+  let controllerOpts = options.controller ? options.controller : {},
+    getParent = this.getParent;
 
-  this.controller = new Ractive(options.view);
+  this.controllerModel = new Ractive(options.view);
 
-  if ( controllerOpts.actions ) this.controller.on( controllerOpts.actions );
-  if ( controllerOpts.observe ) this.controller.observe( controllerOpts.observe );
-  if ( controllerOpts.observeOnce ) this.controller.observeOnce( controllerOpts.observeOnce );
+  if ( controllerOpts.actions ) this.controllerModel.on( controllerOpts.actions );
+  if ( controllerOpts.observe ) this.controllerModel.observe( controllerOpts.observe );
+  if ( controllerOpts.observeOnce ) this.controllerModel.observeOnce( controllerOpts.observeOnce );
+  if ( typeof this.getParent === 'function' ) this.controllerModel.getParent = function() { return getParent().controllerModel; };
 
-  this.controller.on = function() { throw new Error('Use the actions attribute in the route object.'); };
-  this.controller.observe = function() { new Error('Use the observe attribute in the route object.'); };
-  this.controller.observeOnce = function() { new Error('Use the observeOnce attribute in the route object.'); };
+  this.controllerModel.on = function() { throw new Error('Use the actions attribute in the route object.'); };
+  this.controllerModel.observe = function() { new Error('Use the observe attribute in the route object.'); };
+  this.controllerModel.observeOnce = function() { new Error('Use the observeOnce attribute in the route object.'); };
 
   if ( typeof controllerOpts.controller === 'function' ) {
-    controllerOpts.controller.call(this.controller, this.routeData || {});
+    controllerOpts.controller.call(this.controllerModel, this.routeData || {});
   }
 
 }

@@ -23,7 +23,7 @@
     "rollup-plugin-commonjs": "^1.4.0"
   },
   "dependencies": {
-    "lodestar-router": "1.0.3",
+    "lodestar-router": "danjford/lodestar-router#get-parent",
     "ractive": "0.7.3"
   },
   "config": {

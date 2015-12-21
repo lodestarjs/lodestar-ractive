@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.1.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
+Published: Mon Dec 21 2015 22:10:30 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -160,24 +160,22 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
 
   /**
    * Clears the routes cache of no longer needed active routes
-   * @param  {String} key, the original to not remove active from
-   * @param  {Object} pointer, the pointer to clear the cache from
+   * @param  {String} path, The current path
    * @return {Void}, nothing returned
    */
-  function clearCache(key, pointer) {
+  function clearCache(path) {
 
-    var props = Object.getOwnPropertyNames(pointer);
+    var cachedPath = this.cachedPath,
+        i = cachedPath.length;
 
-    for (var i = 0, ii = props.length; i < ii; i++) {
+    while (i--) {
 
-      if (props[i] !== key) {
+      var key = Object.keys(cachedPath[i])[0];
 
-        pointer[props[i]].active = false;
+      if (path.indexOf(key) === -1) {
 
-        if (pointer[props[i]].childRoutes) {
-
-          clearCache(false, pointer[props[i]].childRoutes);
-        }
+        cachedPath[i][key].active = false;
+        cachedPath.splice(i, 1);
       }
     }
   }
@@ -215,6 +213,11 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
     notFoundLog(path, originalPath);
   }
 
+  function getParentPointer(pointer) {
+
+    return pointer;
+  }
+
   /**
    * This goes through the entire routing tree, executing the matching paths.
    *
@@ -230,10 +233,12 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
     if (!path) return;
 
     var pointer = this.routes,
+        parent = false,
         originalPath = path,
         isFinal = false,
         keyCache = '',
-        matchedParent = false;
+        matchedParent = false,
+        currentPath = [];
 
     while (path.length) {
 
@@ -277,23 +282,30 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
 
         if (path.length && matchedParent) {
 
+          // This will be used to clear the cache
+          var obj = {};
+          obj[key] = pointer[key];
+          currentPath.push(key);
+          this.cachedPath.push(obj);
+
           // If it's not the final run and the current route is not active, execute it
           if (!pointer[key].active && !isFinal) {
 
             pointer[key].routeData = routeData;
             pointer[key].active = true;
+            if (parent) pointer[key].getParent = function () {
+              return getParentPointer(parent);
+            };
             pointer[key].controller();
           }
 
           // Remove current part from the path
           path = path.replace(matchedParent[0], '').replace(/^\//, '').replace(/\/$/, '');
 
-          // Remove active from siblings and their children
-          if (pointer[key]) clearCache(key, pointer);
-
           // If it is not final then re-assign the pointer
           if (pointer[key].childRoutes && !isFinal) {
 
+            parent = pointer[key];
             pointer = pointer[key].childRoutes;
           } else if (!isFinal) {
 
@@ -310,10 +322,15 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
 
         pointer[keyCache].routeData = routeData;
         pointer[keyCache].active = true;
+        if (parent) pointer[keyCache].getParent = function () {
+          return getParentPointer(parent);
+        };
         pointer[keyCache].controller();
+        clearCache.call(this, currentPath);
       } else if (!matchedParent) {
 
         pageNotFound.call(this, path, originalPath);
+        clearCache.call(this, currentPath);
         path = '';
         break;
       }
@@ -389,7 +406,7 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
    * @param  {String} url, the route to find a parent in
    * @return {String}, the parent URL
    */
-  function getParent(url) {
+  function getParent$1(url) {
     var begin = url.indexOf('[') + 1,
         end = url.indexOf(']');
     return url.substring(begin, end);
@@ -440,6 +457,7 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
 
     var target = e.target,
         anchorLink = '',
+        targetAttr = '',
         formattedRoute = '',
         unformattedRoute = '';
 
@@ -448,10 +466,11 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
     if (!target) return;
 
     anchorLink = target.getAttribute('href');
+    targetAttr = target.getAttribute('target');
 
-    if (anchorLink === '_blank' || anchorLink.indexOf(':') > -1 && !anchorLink.match(/(?:https?):/)) return;
+    if (anchorLink.indexOf(':') > -1 && !anchorLink.match(/(?:https?):/)) return;
 
-    if (anchorLink.match(/(?:https?):/) && anchorLink.indexOf(window.location.hostname) === -1) return;
+    if (targetAttr === '_blank' || anchorLink.match(/(?:https?):/) && anchorLink.indexOf(window.location.hostname) === -1) return;
 
     // To push to the url in case there is a base path
     unformattedRoute = removeOrigin(anchorLink);
@@ -552,7 +571,7 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
 
     if (routeObject.path.indexOf('[') > -1) {
 
-      parentUrls = getParent(routeObject.path);
+      parentUrls = getParent$1(routeObject.path);
 
       traverse.call(this, parentUrls, routeObject);
     } else {
@@ -648,26 +667,30 @@ Published: Mon Dec 21 2015 16:32:09 GMT+0000 (GMT) */
 
   function setup(options) {
 
-    var controllerOpts = options.controller ? options.controller : {};
+    var controllerOpts = options.controller ? options.controller : {},
+        getParent = this.getParent;
 
-    this.controller = new Ractive(options.view);
+    this.controllerModel = new Ractive(options.view);
 
-    if (controllerOpts.actions) this.controller.on(controllerOpts.actions);
-    if (controllerOpts.observe) this.controller.observe(controllerOpts.observe);
-    if (controllerOpts.observeOnce) this.controller.observeOnce(controllerOpts.observeOnce);
+    if (controllerOpts.actions) this.controllerModel.on(controllerOpts.actions);
+    if (controllerOpts.observe) this.controllerModel.observe(controllerOpts.observe);
+    if (controllerOpts.observeOnce) this.controllerModel.observeOnce(controllerOpts.observeOnce);
+    if (typeof this.getParent === 'function') this.controllerModel.getParent = function () {
+      return getParent().controllerModel;
+    };
 
-    this.controller.on = function () {
+    this.controllerModel.on = function () {
       throw new Error('Use the actions attribute in the route object.');
     };
-    this.controller.observe = function () {
+    this.controllerModel.observe = function () {
       new Error('Use the observe attribute in the route object.');
     };
-    this.controller.observeOnce = function () {
+    this.controllerModel.observeOnce = function () {
       new Error('Use the observeOnce attribute in the route object.');
     };
 
     if (typeof controllerOpts.controller === 'function') {
-      controllerOpts.controller.call(this.controller, this.routeData || {});
+      controllerOpts.controller.call(this.controllerModel, this.routeData || {});
     }
   }
 
