@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.1.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Mon Dec 21 2015 22:10:30 GMT+0000 (GMT) */
+Published: Mon Dec 21 2015 22:13:00 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -89,6 +89,7 @@ Published: Mon Dec 21 2015 22:10:30 GMT+0000 (GMT) */
 
     _this.routes = {};
     _this.config = merge({}, defaultConfig);
+    _this.cachedPath = [];
     window.LodeVar = window.LodeVar || {};
   }
 
