@@ -1,32 +1,25 @@
 import { loadPage, parser} from './ajax';
 import events from './events';
-import { isObject } from 'lodestar-router/src/utils/object';
+import { isObject, fullExtend } from 'lodestar-router/src/utils/object';
 import { logger }  from 'lodestar-router/src/utils/log';
 
 function setup( options ) {
 
-  let ractive = new Ractive(options.view);
+  let controllerOpts = options.controller ? options.controller : {};
 
-  for ( let key in  ractive ) {
-    if ( ractive.hasOwnProperty(key) && key !== 'data' ) {
-      this[key] = ractive[key];
-    }
+  this.controller = new Ractive(options.view);
+
+  if ( controllerOpts.actions ) this.controller.on( controllerOpts.actions );
+  if ( controllerOpts.observe ) this.controller.observe( controllerOpts.observe );
+  if ( controllerOpts.observeOnce ) this.controller.observeOnce( controllerOpts.observeOnce );
+
+  this.controller.on = function() { throw new Error('Use the actions attribute in the route object.'); };
+  this.controller.observe = function() { new Error('Use the observe attribute in the route object.'); };
+  this.controller.observeOnce = function() { new Error('Use the observeOnce attribute in the route object.'); };
+
+  if ( typeof controllerOpts.controller === 'function' ) {
+    controllerOpts.controller.call(this.controller, this.routeData || {});
   }
-
-  // Ractive doesn't let us touch data, so we'll have to manually add the data methods
-  for ( let i = 0, ii = events.length; i < ii; i++ ) {
-    if ( typeof ractive[events[i]] !== 'undefined' ) {
-      this[[events[i]]] = ractive[events[i]];
-    }
-  }
-
-  if ( options.actions ) ractive.on( options.actions );
-  if ( options.observe ) ractive.observe( options.observe );
-
-  this.on = function() { throw new Error('Use the actions attribute in the route object.'); };
-  this.observe = function() { new Error('Use the observe attribute in the route object.'); };
-
-  options.controller.call(this, this.routeData || {});
 
 }
 
