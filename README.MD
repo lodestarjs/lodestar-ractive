@@ -4,6 +4,8 @@ _A combination of the [LodestarJS-Router](https://github.com/lodestarjs/lodestar
 
 ### What is Lodestar-Ractive?
 
+[![Join the chat at https://gitter.im/lodestarjs/lodestar-ractive](https://badges.gitter.im/lodestarjs/lodestar-ractive.svg)](https://gitter.im/lodestarjs/lodestar-ractive?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Lodestar-Ractive provides you with a light, quick and simple way of using a JavaScript framework in your project. It makes use of the Router and general structure provided by LodeStar and the Models and Views provided by Ractive.
 
 I created it as a proof of concept to see how easy it would be to bring two projects like these together to create a simple but powerful framework.
