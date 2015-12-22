@@ -1,7 +1,7 @@
 /* LodestarJS Router - 1.1.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Mon Dec 21 2015 22:13:00 GMT+0000 (GMT) */
+Published: Tue Dec 22 2015 04:40:02 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -195,7 +195,7 @@ Published: Mon Dec 21 2015 22:13:00 GMT+0000 (GMT) */
 
     for (var i = 0, ii = splitKey.length; i < ii; i++) {
 
-      output[splitKey[i].replace(/\//g, '')] = path.match(/[^\/]*/g)[i !== 0 ? i + i : i];
+      output[splitKey[i].split('/')[0].replace(/\//g, '')] = path.match(/[^\/]*/g)[i !== 0 ? i + i : i];
     }
 
     return output;
@@ -264,16 +264,16 @@ Published: Mon Dec 21 2015 22:13:00 GMT+0000 (GMT) */
             dynamicKey = key.replace(/\:[^\/]*/g, '[^\\/]*');
           } else {
 
-            routeData[key.replace(':', '')] = path.match(/[^\/]*/)[0];
-            dynamicKey = /[^\/]*/;
+            routeData[key.match(/\:[^\/]*/g)[0].replace(/(\:|\/)/g, '')] = path.match(/[^\/]*/)[0];
+            dynamicKey = key.replace(/\*[^\/]*/g, '').replace(/\:[^\/]*/g, '[^\\/]*');
           }
         }
 
         // If contains * then there is a wildcard segment
         if (key.match(/\*[a-z]+/i)) {
 
-          routeData[key.replace(/\*[a-z]+/i, '')] = path.match(/.*/)[0].split('/');
-          dynamicKey = /.*/;
+          routeData[key.match(/\*[a-z]+/i)[0].replace(/\*/gi, '')] = path.replace(new RegExp(dynamicKey), '').match(/.*/)[0].split('/');
+          dynamicKey = '.*';
         }
 
         matchedParent = path.match('^' + (dynamicKey || key));
@@ -376,15 +376,6 @@ Published: Mon Dec 21 2015 22:13:00 GMT+0000 (GMT) */
 
     createPointer.childRoutes[routeObject.path] = {};
     createPointer.childRoutes[routeObject.path].controller = routeObject.controller;
-  }
-
-  /**
-   * Returns all of the current routes in this instance of the Router.
-   * @return {Object} returns the routes.
-   */
-  function getRoutes() {
-
-    return copy({}, this.routes);
   }
 
   function formatRoute(route) {
@@ -605,7 +596,6 @@ Published: Mon Dec 21 2015 22:13:00 GMT+0000 (GMT) */
 
     createRoute: createRoute,
     map: map,
-    getRoutes: getRoutes,
     resolve: resolve,
     notFound: function notFound(callback) {
       this.userNotFound = callback;
