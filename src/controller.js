@@ -1,5 +1,4 @@
 import { loadPage, parser} from './ajax';
-import events from './events';
 import { isObject, fullExtend } from 'lodestar-router/src/utils/object';
 import { logger }  from 'lodestar-router/src/utils/log';
 
