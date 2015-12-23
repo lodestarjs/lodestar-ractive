@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.1.0.
-Author: Dan J Ford
-Contributors: undefined
-Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
+/* Lodestar-Ractive - 1.1.0. 
+Author: Dan J Ford 
+Contributors: undefined 
+Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -378,15 +378,6 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
     createPointer.childRoutes[routeObject.path].controller = routeObject.controller;
   }
 
-  /**
-   * Returns all of the current routes in this instance of the Router.
-   * @return {Object} returns the routes.
-   */
-  function getRoutes() {
-
-    return copy({}, this.routes);
-  }
-
   function formatRoute(route) {
 
     if (route === '') {
@@ -484,6 +475,17 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
     return formattedRoute === '' ? '/' : formattedRoute;
   }
 
+  function listenEvent(target, e, f) {
+
+    if (hasEventListener) {
+
+      target.addEventListener(e, f, false);
+    } else {
+
+      target.attachEvent(e, f);
+    }
+  }
+
   /**
    * This sets up the events for 'Hashchange' and 'History' mode depending on what has been selected and what is available.
    * @return {Void}, nothing returned
@@ -495,13 +497,11 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
 
     if (this.config.loggingLevel === 'HIGH') logger.debug('Listener is now active.');
 
-    var windowListener = hasEventListener ? window.addEventListener : window.attachEvent,
-        docListener = hasEventListener ? document.addEventListener : document.attachEvent,
-        initialLink = this.config.useHistory && hasHistory ? window.location.pathname : window.location.hash;
+    var initialLink = this.config.useHistory && hasHistory ? window.location.pathname : window.location.hash;
 
     this.config.listenerActive = true;
 
-    docListener('click', function (e) {
+    listenEvent(document, 'click', function (e) {
       window.LodeVar.previousPath = formatRoute.call(_this, removeOrigin(window.location.href));
     });
 
@@ -509,22 +509,22 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for hash changes.');
 
-      windowListener(hasEventListener ? 'hashchange' : 'onhashchange', function () {
+      listenEvent(window, hasEventListener ? 'hashchange' : 'onhashchange', function () {
         _this.resolve(formatRoute.call(_this, window.location.hash));
       });
     } else if (this.config.useHistory && hasHistory) {
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for clicks or popstate.');
 
-      docListener('click', function (e) {
-
+      listenEvent(document, 'click', function (e) {
         var historyLink = historyClick.call(_this, e);
 
         if (historyLink) {
           _this.resolve(historyLink);
         }
       });
-      windowListener('popstate', function () {
+
+      listenEvent(window, 'popstate', function () {
         _this.resolve(formatRoute.call(_this, window.location.pathname));
       });
     }
@@ -605,7 +605,6 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
 
     createRoute: createRoute,
     map: map,
-    getRoutes: getRoutes,
     resolve: resolve,
     notFound: function notFound(callback) {
       this.userNotFound = callback;
@@ -669,13 +668,18 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
   function setup(options) {
 
     var controllerOpts = options.controller ? options.controller : {},
-        getParent = this.getParent;
+        getParent = this.getParent,
+        hasView = typeof options.view !== 'undefined';
 
-    this.controllerModel = new Ractive(options.view);
+    this.controllerModel = hasView ? new Ractive(options.view) : {};
 
-    if (controllerOpts.actions) this.controllerModel.on(controllerOpts.actions);
-    if (controllerOpts.observe) this.controllerModel.observe(controllerOpts.observe);
-    if (controllerOpts.observeOnce) this.controllerModel.observeOnce(controllerOpts.observeOnce);
+    if (hasView) {
+
+      if (controllerOpts.actions) this.controllerModel.on(controllerOpts.actions);
+      if (controllerOpts.observe) this.controllerModel.observe(controllerOpts.observe);
+      if (controllerOpts.observeOnce) this.controllerModel.observeOnce(controllerOpts.observeOnce);
+    }
+
     if (typeof this.getParent === 'function') this.controllerModel.getParent = function () {
       return getParent().controllerModel;
     };
@@ -725,6 +729,9 @@ Published: Tue Dec 22 2015 02:17:07 GMT+0000 (GMT) */
 
         setup.call(this, options);
       }
+    } else {
+
+      setup.call(this, options);
     }
   }
 

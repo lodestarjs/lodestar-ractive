@@ -15,15 +15,24 @@ categories: example
 {%raw-%}
 router.createRoute({
   path: '/',
-  controller: function() {
-    console.log('This is the index page.');
+  controller: {
+
+    controller: function() {
+      console.log('This is the index page.');
+    }
+
   }
+
 });
 
 router.createRoute({
   path: '[/]blog',
-  controller: function() {
-    console.log('This is the child of that ^ index page.');
+  controller: {
+
+    controller: function() {
+      console.log('This is the child of that ^ index page.');
+    }
+
   }
 });
 {%endraw-%}

@@ -1,4 +1,4 @@
-import { clearCloak } from '../helpers/helpers';
+import { clearCloak, scrollToEl } from '../helpers/helpers';
 
 export default {
 
@@ -17,7 +17,7 @@ export default {
       this.set('color', "#" + Math.random().toString(16).slice(2, 8));
     },
     downToFirst: () => {
-      scrollTo(document.body, document.querySelectorAll('.panel')[0].offsetTop, 600);
+      scrollToEl(document.body, document.querySelectorAll('.panel')[0].offsetTop, 600);
     },
     addTodo: function ( event, inputVal ) {
       if ( inputVal.length && this.get('todo.items').length < this.get('todo.max') ) {
