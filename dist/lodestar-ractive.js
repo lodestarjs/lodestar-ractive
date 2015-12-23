@@ -1,7 +1,7 @@
-/* Lodestar-Ractive - 1.1.0.
-Author: Dan J Ford
-Contributors: undefined
-Published: Wed Dec 23 2015 00:19:29 GMT+0000 (GMT) */
+/* Lodestar-Ractive - 1.1.0. 
+Author: Dan J Ford 
+Contributors: undefined 
+Published: Wed Dec 23 2015 00:35:09 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -668,13 +668,18 @@ Published: Wed Dec 23 2015 00:19:29 GMT+0000 (GMT) */
   function setup(options) {
 
     var controllerOpts = options.controller ? options.controller : {},
-        getParent = this.getParent;
+        getParent = this.getParent,
+        hasView = typeof options.view !== 'undefined';
 
-    this.controllerModel = new Ractive(options.view);
+    this.controllerModel = hasView ? new Ractive(options.view) : {};
 
-    if (controllerOpts.actions) this.controllerModel.on(controllerOpts.actions);
-    if (controllerOpts.observe) this.controllerModel.observe(controllerOpts.observe);
-    if (controllerOpts.observeOnce) this.controllerModel.observeOnce(controllerOpts.observeOnce);
+    if (hasView) {
+
+      if (controllerOpts.actions) this.controllerModel.on(controllerOpts.actions);
+      if (controllerOpts.observe) this.controllerModel.observe(controllerOpts.observe);
+      if (controllerOpts.observeOnce) this.controllerModel.observeOnce(controllerOpts.observeOnce);
+    }
+
     if (typeof this.getParent === 'function') this.controllerModel.getParent = function () {
       return getParent().controllerModel;
     };
@@ -724,6 +729,9 @@ Published: Wed Dec 23 2015 00:19:29 GMT+0000 (GMT) */
 
         setup.call(this, options);
       }
+    } else {
+
+      setup.call(this, options);
     }
   }
 

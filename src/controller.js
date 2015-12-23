@@ -5,13 +5,19 @@ import { logger }  from 'lodestar-router/src/utils/log';
 function setup( options ) {
 
   let controllerOpts = options.controller ? options.controller : {},
-    getParent = this.getParent;
+    getParent = this.getParent,
+    hasView = typeof options.view !== 'undefined';
 
-  this.controllerModel = new Ractive(options.view);
+  this.controllerModel = hasView ? new Ractive( options.view ) : {};
 
-  if ( controllerOpts.actions ) this.controllerModel.on( controllerOpts.actions );
-  if ( controllerOpts.observe ) this.controllerModel.observe( controllerOpts.observe );
-  if ( controllerOpts.observeOnce ) this.controllerModel.observeOnce( controllerOpts.observeOnce );
+  if ( hasView ) {
+
+    if ( controllerOpts.actions ) this.controllerModel.on( controllerOpts.actions );
+    if ( controllerOpts.observe ) this.controllerModel.observe( controllerOpts.observe );
+    if ( controllerOpts.observeOnce ) this.controllerModel.observeOnce( controllerOpts.observeOnce );
+
+  }
+
   if ( typeof this.getParent === 'function' ) this.controllerModel.getParent = function() { return getParent().controllerModel; };
 
   this.controllerModel.on = function() { throw new Error('Use the actions attribute in the route object.'); };
@@ -56,6 +62,10 @@ export default function setupController( options ) {
       setup.call( this, options );
 
     }
+
+  } else {
+
+    setup.call( this, options );
 
   }
 
