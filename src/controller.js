@@ -1,5 +1,5 @@
 import { loadPage, parser} from './ajax';
-import { isObject, fullExtend } from 'lodestar-router/src/utils/object';
+import { isObject } from 'lodestar-router/src/utils/object';
 import { logger }  from 'lodestar-router/src/utils/log';
 
 function setup( options ) {
