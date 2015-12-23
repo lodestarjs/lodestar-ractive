@@ -25,15 +25,18 @@ categories: example
 {%raw-%}
 router.createRoute({
   path: '/',
-  controller: function() { },
+  controller: {
+
+    actions: {
+      randomColor: function() {
+         this.set('color', "#" + Math.random().toString(16).slice(2, 8));
+      }
+    }
+
+  },
   view: {
     el: '#target',
     template: '<div id="random-color" style="background-color: \{{color}};"></div><button on-click="randomColor">click me</button>'
-  },
-  actions: {
-    randomColor: function() {
-       this.set('color', "#" + Math.random().toString(16).slice(2, 8));
-    }
   }
 });
 {%endraw-%}

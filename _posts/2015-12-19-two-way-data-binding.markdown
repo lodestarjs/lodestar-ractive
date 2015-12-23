@@ -35,7 +35,7 @@ categories: example
 {%raw-%}
 router.createRoute({
   path: '/',
-  controller: function() { },
+  controller: { },
   view: {
     el: '#target',
     template: '<input type="text" value="\{{fullName}}"/> Hi my name is \{{fullName}}, and I find this is so simple!'

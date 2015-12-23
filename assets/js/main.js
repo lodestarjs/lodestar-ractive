@@ -4,32 +4,45 @@
 
   function clearCloak() {
 
-    let elems = document.querySelectorAll('.cloak');
+    var elems = document.querySelectorAll('.cloak');
     [].forEach.call(elems, function (el) {
       el.classList.remove('cloak');
     });
   }
 
+  function scrollToEl(element, to, duration) {
+    if (duration < 0) return;
+    var difference = to - element.scrollTop;
+    var perTick = difference / duration * 10;
+
+    setTimeout(function () {
+      element.scrollTop = element.scrollTop + perTick;
+      if (element.scrollTop === to) return;
+      scrollToEl(element, to, duration - 10);
+    }, 10);
+  }
+
   var TutorialsController = {
 
-    controller: function () {
-
-      clearCloak();
-
-      setInterval(() => {
-        this.set('time', new Date());
-      }, 1000);
-    }
+    controller: function controller() {}
 
   };
 
   var LoadExampleController = {
 
-    controller: function () {},
+    controller: function controller() {
+      var _this = this;
+
+      clearCloak();
+
+      setInterval(function () {
+        _this.set('time', new Date());
+      }, 1000);
+    },
 
     actions: {
-      downToFirst: function () {
-        scrollTo(document.body, document.getElementById('first').offsetTop, 600);
+      downToFirst: function downToFirst() {
+        scrollToEl(document.body, document.getElementById('first').offsetTop, 600);
       }
     }
 
@@ -37,30 +50,31 @@
 
   var IndexController = {
 
-    controller: function () {
+    controller: function controller() {
+      var _this = this;
 
       clearCloak();
 
-      window.addEventListener("beforeunload", () => {
-        localStorage.indexData = JSON.stringify(this.get());
+      window.addEventListener("beforeunload", function () {
+        localStorage.indexData = JSON.stringify(_this.get());
       });
     },
 
     actions: {
-      randomColor: function () {
+      randomColor: function randomColor() {
         this.set('color', "#" + Math.random().toString(16).slice(2, 8));
       },
-      downToFirst: () => {
-        scrollTo(document.body, document.querySelectorAll('.panel')[0].offsetTop, 600);
+      downToFirst: function downToFirst() {
+        scrollToEl(document.body, document.querySelectorAll('.panel')[0].offsetTop, 600);
       },
-      addTodo: function (event, inputVal) {
+      addTodo: function addTodo(event, inputVal) {
         if (inputVal.length && this.get('todo.items').length < this.get('todo.max')) {
           this.push('todo.items', { task: inputVal });
           this.set('todo.input', '');
         }
         event.original.preventDefault();
       },
-      activeTab: function (event) {
+      activeTab: function activeTab(event) {
         var active = document.querySelectorAll('.active');
 
         if (active.length) {
@@ -80,9 +94,9 @@
 
   };
 
-  let base = '/lodestar-ractive';
+  var base = '/lodestar-ractive';
 
-  let router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: base });
+  var router = new LodeRactive({ DEBUG: false, useHistory: true, basePath: base });
 
   router.createRoute({
     path: '/tutorials',

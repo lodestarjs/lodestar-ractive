@@ -19,7 +19,7 @@ categories: example
 {%raw-%}
 router.createRoute({
   path: '/example',
-  controller: function() { },
+  controller: { },
   view: {
     el: '#target',
     template: {

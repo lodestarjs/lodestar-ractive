@@ -47,20 +47,24 @@ categories: example
 {% highlight javascript %}
 router.createRoute({
   path: '/',
-  controller: function() { },
+  controller: {
+
+    actions: {
+      addTodo: function ( event, inputVal ) {
+        if ( inputVal.length && this.get('todo.items').length < this.get('todo.max') ) {
+          this.push( 'todo.items', { task: inputVal } );
+          this.set('todo.input', '');
+        }
+        event.original.preventDefault();
+      }
+    }
+
+  },
   view: {
     el: '#main-page',
     data: { 'todo': { 'items': [], 'max': 5 } },
     template: document.querySelector('#todo').innerHTML
-  },
-  actions: {
-    addTodo: function ( event, inputVal ) {
-      if ( inputVal.length && this.get('todo.items').length < this.get('todo.max') ) {
-        this.push( 'todo.items', { task: inputVal } );
-        this.set('todo.input', '');
-      }
-      event.original.preventDefault();
-    }
+  }
 });
 {% endhighlight %}
         </div>
