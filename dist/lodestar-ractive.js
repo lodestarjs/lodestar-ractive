@@ -1,7 +1,7 @@
-/* LodestarJS Router - 1.0.4. 
+/* Lodestar-Ractive - 1.1.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
+Published: Wed Dec 23 2015 00:38:07 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -89,6 +89,7 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
     _this.routes = {};
     _this.config = merge({}, defaultConfig);
+    _this.cachedPath = [];
     window.LodeVar = window.LodeVar || {};
   }
 
@@ -126,8 +127,8 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.0.4 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.0.4 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.1.0 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.1.0 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -160,24 +161,22 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
   /**
    * Clears the routes cache of no longer needed active routes
-   * @param  {String} key, the original to not remove active from
-   * @param  {Object} pointer, the pointer to clear the cache from
+   * @param  {String} path, The current path
    * @return {Void}, nothing returned
    */
-  function clearCache(key, pointer) {
+  function clearCache(path) {
 
-    var props = Object.getOwnPropertyNames(pointer);
+    var cachedPath = this.cachedPath,
+        i = cachedPath.length;
 
-    for (var i = 0, ii = props.length; i < ii; i++) {
+    while (i--) {
 
-      if (props[i] !== key) {
+      var key = Object.keys(cachedPath[i])[0];
 
-        pointer[props[i]].active = false;
+      if (path.indexOf(key) === -1) {
 
-        if (pointer[props[i]].childRoutes) {
-
-          clearCache(false, pointer[props[i]].childRoutes);
-        }
+        cachedPath[i][key].active = false;
+        cachedPath.splice(i, 1);
       }
     }
   }
@@ -196,7 +195,7 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
     for (var i = 0, ii = splitKey.length; i < ii; i++) {
 
-      output[splitKey[i].replace(/\//g, '')] = path.match(/[^\/]*/g)[i !== 0 ? i + i : i];
+      output[splitKey[i].split('/')[0].replace(/\//g, '')] = path.match(/[^\/]*/g)[i !== 0 ? i + i : i];
     }
 
     return output;
@@ -215,6 +214,11 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     notFoundLog(path, originalPath);
   }
 
+  function getParentPointer(pointer) {
+
+    return pointer;
+  }
+
   /**
    * This goes through the entire routing tree, executing the matching paths.
    *
@@ -230,10 +234,12 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     if (!path) return;
 
     var pointer = this.routes,
+        parent = false,
         originalPath = path,
         isFinal = false,
         keyCache = '',
-        matchedParent = false;
+        matchedParent = false,
+        currentPath = [];
 
     while (path.length) {
 
@@ -258,16 +264,16 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
             dynamicKey = key.replace(/\:[^\/]*/g, '[^\\/]*');
           } else {
 
-            routeData[key.replace(':', '')] = path.match(/[^\/]*/)[0];
-            dynamicKey = /[^\/]*/;
+            routeData[key.match(/\:[^\/]*/g)[0].replace(/(\:|\/)/g, '')] = path.match(/[^\/]*/)[0];
+            dynamicKey = key.replace(/\*[^\/]*/g, '').replace(/\:[^\/]*/g, '[^\\/]*');
           }
         }
 
         // If contains * then there is a wildcard segment
         if (key.match(/\*[a-z]+/i)) {
 
-          routeData[key.replace(/\*[a-z]+/i, '')] = path.match(/.*/)[0].split('/');
-          dynamicKey = /.*/;
+          routeData[key.match(/\*[a-z]+/i)[0].replace(/\*/gi, '')] = path.replace(new RegExp(dynamicKey), '').match(/.*/)[0].split('/');
+          dynamicKey = '.*';
         }
 
         matchedParent = path.match('^' + (dynamicKey || key));
@@ -277,23 +283,30 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
         if (path.length && matchedParent) {
 
+          // This will be used to clear the cache
+          var obj = {};
+          obj[key] = pointer[key];
+          currentPath.push(key);
+          this.cachedPath.push(obj);
+
           // If it's not the final run and the current route is not active, execute it
           if (!pointer[key].active && !isFinal) {
 
             pointer[key].routeData = routeData;
             pointer[key].active = true;
+            if (parent) pointer[key].getParent = function () {
+              return getParentPointer(parent);
+            };
             pointer[key].controller();
           }
 
           // Remove current part from the path
           path = path.replace(matchedParent[0], '').replace(/^\//, '').replace(/\/$/, '');
 
-          // Remove active from siblings and their children
-          if (pointer[key]) clearCache(key, pointer);
-
           // If it is not final then re-assign the pointer
           if (pointer[key].childRoutes && !isFinal) {
 
+            parent = pointer[key];
             pointer = pointer[key].childRoutes;
           } else if (!isFinal) {
 
@@ -310,10 +323,15 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
         pointer[keyCache].routeData = routeData;
         pointer[keyCache].active = true;
+        if (parent) pointer[keyCache].getParent = function () {
+          return getParentPointer(parent);
+        };
         pointer[keyCache].controller();
+        clearCache.call(this, currentPath);
       } else if (!matchedParent) {
 
         pageNotFound.call(this, path, originalPath);
+        clearCache.call(this, currentPath);
         path = '';
         break;
       }
@@ -360,15 +378,6 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     createPointer.childRoutes[routeObject.path].controller = routeObject.controller;
   }
 
-  /**
-   * Returns all of the current routes in this instance of the Router.
-   * @return {Object} returns the routes.
-   */
-  function getRoutes() {
-
-    return copy({}, this.routes);
-  }
-
   function formatRoute(route) {
 
     if (route === '') {
@@ -389,7 +398,7 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
    * @param  {String} url, the route to find a parent in
    * @return {String}, the parent URL
    */
-  function getParent(url) {
+  function getParent$1(url) {
     var begin = url.indexOf('[') + 1,
         end = url.indexOf(']');
     return url.substring(begin, end);
@@ -440,6 +449,7 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
     var target = e.target,
         anchorLink = '',
+        targetAttr = '',
         formattedRoute = '',
         unformattedRoute = '';
 
@@ -448,10 +458,11 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     if (!target) return;
 
     anchorLink = target.getAttribute('href');
+    targetAttr = target.getAttribute('target');
 
-    if (anchorLink === '_blank' || anchorLink.indexOf(':') > -1 && !anchorLink.match(/(?:https?):/)) return;
+    if (anchorLink.indexOf(':') > -1 && !anchorLink.match(/(?:https?):/)) return;
 
-    if (anchorLink.match(/(?:https?):/) && anchorLink.indexOf(window.location.hostname) === -1) return;
+    if (targetAttr === '_blank' || anchorLink.match(/(?:https?):/) && anchorLink.indexOf(window.location.hostname) === -1) return;
 
     // To push to the url in case there is a base path
     unformattedRoute = removeOrigin(anchorLink);
@@ -462,6 +473,17 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     e.preventDefault();
 
     return formattedRoute === '' ? '/' : formattedRoute;
+  }
+
+  function listenEvent(target, e, f) {
+
+    if (hasEventListener) {
+
+      target.addEventListener(e, f, false);
+    } else {
+
+      target.attachEvent(e, f);
+    }
   }
 
   /**
@@ -475,13 +497,11 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
     if (this.config.loggingLevel === 'HIGH') logger.debug('Listener is now active.');
 
-    var windowListener = hasEventListener ? window.addEventListener : window.attachEvent,
-        docListener = hasEventListener ? document.addEventListener : document.attachEvent,
-        initialLink = this.config.useHistory && hasHistory ? window.location.pathname : window.location.hash;
+    var initialLink = this.config.useHistory && hasHistory ? window.location.pathname : window.location.hash;
 
     this.config.listenerActive = true;
 
-    docListener('click', function (e) {
+    listenEvent(document, 'click', function (e) {
       window.LodeVar.previousPath = formatRoute.call(_this, removeOrigin(window.location.href));
     });
 
@@ -489,22 +509,22 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for hash changes.');
 
-      windowListener(hasEventListener ? 'hashchange' : 'onhashchange', function () {
+      listenEvent(window, hasEventListener ? 'hashchange' : 'onhashchange', function () {
         _this.resolve(formatRoute.call(_this, window.location.hash));
       });
     } else if (this.config.useHistory && hasHistory) {
 
       if (this.config.loggingLevel === 'HIGH') logger.debug('Listening for clicks or popstate.');
 
-      docListener('click', function (e) {
-
+      listenEvent(document, 'click', function (e) {
         var historyLink = historyClick.call(_this, e);
 
         if (historyLink) {
           _this.resolve(historyLink);
         }
       });
-      windowListener('popstate', function () {
+
+      listenEvent(window, 'popstate', function () {
         _this.resolve(formatRoute.call(_this, window.location.pathname));
       });
     }
@@ -552,7 +572,7 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
     if (routeObject.path.indexOf('[') > -1) {
 
-      parentUrls = getParent(routeObject.path);
+      parentUrls = getParent$1(routeObject.path);
 
       traverse.call(this, parentUrls, routeObject);
     } else {
@@ -585,7 +605,6 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
     createRoute: createRoute,
     map: map,
-    getRoutes: getRoutes,
     resolve: resolve,
     notFound: function notFound(callback) {
       this.userNotFound = callback;
@@ -646,36 +665,38 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
     });
   }
 
-  var events = ['add', 'animate', 'detach', 'find', 'findAll', 'findAllComponents', 'findComponent', 'findContainer', 'findParent', 'fire', 'get', 'insert', 'link', 'merge', 'off', 'pop', 'push', 'render', 'reset', 'resetPartial', 'resetTemplate', 'reverse', 'set', 'shift', 'sort', 'splice', 'subtract', 'teardown', 'toggle', 'toHTML', 'unlink', 'unrender', 'unshift', 'update', 'updateModel'];
-
   function setup(options) {
 
-    var ractive = new Ractive(options.view);
+    var controllerOpts = options.controller ? options.controller : {},
+        getParent = this.getParent,
+        hasView = typeof options.view !== 'undefined';
 
-    for (var key in ractive) {
-      if (ractive.hasOwnProperty(key) && key !== 'data') {
-        this[key] = ractive[key];
-      }
+    this.controllerModel = hasView ? new Ractive(options.view) : {};
+
+    if (hasView) {
+
+      if (controllerOpts.actions) this.controllerModel.on(controllerOpts.actions);
+      if (controllerOpts.observe) this.controllerModel.observe(controllerOpts.observe);
+      if (controllerOpts.observeOnce) this.controllerModel.observeOnce(controllerOpts.observeOnce);
     }
 
-    // Ractive doesn't let us touch data, so we'll have to manually add the data methods
-    for (var i = 0, ii = events.length; i < ii; i++) {
-      if (typeof ractive[events[i]] !== 'undefined') {
-        this[[events[i]]] = ractive[events[i]];
-      }
-    }
+    if (typeof this.getParent === 'function') this.controllerModel.getParent = function () {
+      return getParent().controllerModel;
+    };
 
-    if (options.actions) ractive.on(options.actions);
-    if (options.observe) ractive.observe(options.observe);
-
-    this.on = function () {
+    this.controllerModel.on = function () {
       throw new Error('Use the actions attribute in the route object.');
     };
-    this.observe = function () {
+    this.controllerModel.observe = function () {
       new Error('Use the observe attribute in the route object.');
     };
+    this.controllerModel.observeOnce = function () {
+      new Error('Use the observeOnce attribute in the route object.');
+    };
 
-    options.controller.call(this, this.routeData || {});
+    if (typeof controllerOpts.controller === 'function') {
+      controllerOpts.controller.call(this.controllerModel, this.routeData || {});
+    }
   }
 
   /**
@@ -708,6 +729,9 @@ Published: Fri Dec 18 2015 23:59:48 GMT+0000 (GMT) */
 
         setup.call(this, options);
       }
+    } else {
+
+      setup.call(this, options);
     }
   }
 
