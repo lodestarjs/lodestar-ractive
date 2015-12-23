@@ -15,7 +15,7 @@ lib = gobble([
       entry: 'main.js',
       moduleName: 'LodeRactive',
       dest: 'lodestar-ractive.js',
-      banner: `/* LodestarJS Router - ${info.version}. \nAuthor: Dan J Ford \nContributors: ${info.contributors} \nPublished: ${new Date()} */\n`
+      banner: `/* Lodestar-Ractive - ${info.version}. \nAuthor: Dan J Ford \nContributors: ${info.contributors} \nPublished: ${new Date()} */\n`
     })
 ]);
 
