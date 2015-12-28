@@ -9,3 +9,7 @@ Lodestar-Ractive provides you with a light, quick and simple way of using a Java
 I created it as a proof of concept to see how easy it would be to bring two projects like these together to create a simple but powerful framework.
 
 Read our [documentation](https://github.com/lodestarjs/lodestar-ractive/wiki) for more information!
+
+***
+
+[![Gitter](https://badges.gitter.im/lodestarjs/lodestar-ractive.svg)](https://gitter.im/lodestarjs/lodestar-ractive?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
