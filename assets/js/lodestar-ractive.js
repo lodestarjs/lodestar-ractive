@@ -712,7 +712,7 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
 
       if (isObject(options.view.template) && options.view.template.url) {
 
-        if ( options.view.template.url === (window.LodeVar.previousPath || options.view.template.url) ) {
+        if ( options.view.template.url !== window.LodeVar.previousPath ) {
 
           options.view.template = parser(document.getElementsByTagName('body')[0], options.view.template);
 
