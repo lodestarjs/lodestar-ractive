@@ -13,8 +13,9 @@ export default {
   },
 
   actions: {
-    downToFirst: function() {
+    downToFirst: function(event) {
       scrollToEl(document.body, document.getElementById('first').offsetTop, 600);
+      return false;
     }
   }
 
