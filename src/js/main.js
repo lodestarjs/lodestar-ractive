@@ -41,7 +41,6 @@ router.createRoute({
   controller: IndexController,
   view: {
     el: '#main-page',
-    data: {},
     data: (localStorage.indexData ? JSON.parse(localStorage.indexData) : { 'todo': { 'items': [], 'max': 5 } }),
     template: {
       url: base || '/',
