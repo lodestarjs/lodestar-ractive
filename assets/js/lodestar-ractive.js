@@ -712,22 +712,19 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
 
       if (isObject(options.view.template) && options.view.template.url) {
 
-        if ( options.view.template.url === ( window.LodeVar.previousPath || options.view.template.url ) ) { // Solution to issue #32
+        if (options.view.template.notOnSame && options.view.template.url === (window.LodeVar.previousPath || options.view.template.url)) {
 
           options.view.template = parser(document.getElementsByTagName('body')[0], options.view.template);
 
           setup.call(this, options);
-        
-        } else {
-
-          loadPage(options.view.template).then(function (template) {
-  
-            options.view.template = template;
-            setup.call(_this, options);
-          });
-          
+          return;
         }
-        
+
+        loadPage(options.view.template).then(function (template) {
+
+          options.view.template = template;
+          setup.call(_this, options);
+        });
       } else {
 
         setup.call(this, options);

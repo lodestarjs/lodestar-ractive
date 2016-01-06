@@ -974,7 +974,10 @@ pre {
   height: 50px;
   border-radius: 50%;
   font-size: 30px;
-  margin-top: 50px;
+  display: block;
+  margin: 50px auto;
+  color: white;
+  text-decoration: none;
   -webkit-transition: all 150ms linear;
   -moz-transition: all 150ms linear;
   -o-transition: all 150ms linear;
