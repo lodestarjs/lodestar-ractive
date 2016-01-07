@@ -1,7 +1,7 @@
 /* Lodestar-Ractive - 1.2.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Thu Jan 07 2016 10:05:31 GMT+0000 (GMT) */
+Published: Thu Jan 07 2016 11:48:06 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -713,7 +713,7 @@ Published: Thu Jan 07 2016 10:05:31 GMT+0000 (GMT) */
     if (options.view && !options.active) {
 
       if (!options.view.template) options.view.template = {};
-      if (!options.view.template.url) options.view.template.url = options.path;
+      if (typeof options.view.template === 'object' && !options.view.template.url) options.view.template.url = options.path;
 
       if (isObject(options.view.template) && options.view.template.url) {
 
