@@ -42,6 +42,9 @@ export default function setupController( options ) {
 
   if ( options.view && !options.active) {
 
+    if ( !options.view.template ) options.view.template = {};
+    if ( !options.view.template.url ) options.view.template.url = options.path;
+
     if ( isObject(options.view.template) && options.view.template.url ) {
 
       if ( options.view.template.url === ( window.LodeVar.previousPath || options.view.template.url ) ) {
