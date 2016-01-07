@@ -44,7 +44,7 @@ export default function setupController( options ) {
 
     if ( isObject(options.view.template) && options.view.template.url ) {
 
-      if ( options.view.template.notOnSame && options.view.template.url === ( window.LodeVar.previousPath || options.view.template.url ) ) {
+      if ( options.view.template.url === ( window.LodeVar.previousPath || options.view.template.url ) ) {
 
         options.view.template = parser( document.getElementsByTagName('body')[0], options.view.template );
 
