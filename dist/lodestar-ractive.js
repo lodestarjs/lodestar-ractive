@@ -1,7 +1,7 @@
-/* Lodestar-Ractive - 1.1.0. 
+/* Lodestar-Ractive - 1.2.0. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
+Published: Thu Jan 07 2016 09:58:53 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -127,8 +127,8 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.1.0 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.1.0 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.2.0 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.2.0 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -694,8 +694,10 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
       new Error('Use the observeOnce attribute in the route object.');
     };
 
-    if (typeof controllerOpts.controller === 'function') {
-      controllerOpts.controller.call(this.controllerModel, this.routeData || {});
+    if (typeof controllerOpts.controller) logger.warn('DEPRECATED: The controller attribute within the controller has been changed to onInit.');
+
+    if (typeof controllerOpts.init === 'function') {
+      controllerOpts.init.call(this.controllerModel, this.routeData || {});
     }
   }
 
@@ -710,9 +712,12 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
 
     if (options.view && !options.active) {
 
+      if (!options.view.template) options.view.template = {};
+      if (!options.view.template.url) options.view.template.url = options.path;
+
       if (isObject(options.view.template) && options.view.template.url) {
 
-        if (options.view.template.notOnSame && options.view.template.url === (window.LodeVar.previousPath || options.view.template.url)) {
+        if (options.view.template.url === (window.LodeVar.previousPath || options.view.template.url)) {
 
           options.view.template = parser(document.getElementsByTagName('body')[0], options.view.template);
 
