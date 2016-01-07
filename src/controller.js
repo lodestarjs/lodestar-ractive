@@ -26,8 +26,8 @@ function setup( options ) {
 
   if ( typeof controllerOpts.controller) logger.warn('DEPRECATED: The controller attribute within the controller has been changed to onInit.');
 
-  if ( typeof controllerOpts.init === 'function' ) {
-    controllerOpts.init.call(this.controllerModel, this.routeData || {});
+  if ( typeof controllerOpts.onInit === 'function' ) {
+    controllerOpts.onInit.call(this.controllerModel, this.routeData || {});
   }
 
 }
