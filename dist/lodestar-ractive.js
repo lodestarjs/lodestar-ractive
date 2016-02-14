@@ -1,7 +1,7 @@
 /* Lodestar-Ractive - 1.1.1. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Sun Feb 14 2016 11:43:06 GMT+0000 (GMT) */
+Published: Sun Feb 14 2016 11:47:37 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
