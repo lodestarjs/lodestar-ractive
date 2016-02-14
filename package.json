@@ -1,7 +1,7 @@
 {
   "name": "lodestar-ractive",
-  "version": "1.1.0",
-  "description": "A combination of the LodestarJS-Router and RactiveJS in one place as a proof of concept, presented as a framework.",
+  "version": "1.1.1",
+  "description": "A combination of the LodestarJS-Router and RactiveJS in one place, presented as a framework.",
   "jsnext:main": "src/main.js",
   "main": "dist/lodestar-ractive.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "rollup-plugin-commonjs": "^1.4.0"
   },
   "dependencies": {
-    "lodestar-router": "1.0.5",
+    "lodestar-router": "1.0.6",
     "ractive": "0.7.3"
   },
   "config": {

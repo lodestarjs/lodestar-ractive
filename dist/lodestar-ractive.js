@@ -1,7 +1,7 @@
-/* Lodestar-Ractive - 1.1.0. 
+/* Lodestar-Ractive - 1.1.1. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
+Published: Sun Feb 14 2016 11:43:06 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -127,8 +127,8 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.1.0 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.1.0 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.1.1 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.1.1 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -191,11 +191,15 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
 
     var output = {};
 
-    splitKey.shift();
+    while (path.length && splitKey.length) {
 
-    for (var i = 0, ii = splitKey.length; i < ii; i++) {
+      if (splitKey[0].indexOf(':') > -1) {
 
-      output[splitKey[i].split('/')[0].replace(/\//g, '')] = path.match(/[^\/]*/g)[i !== 0 ? i + i : i];
+        output[splitKey[0].split('/')[0].replace(/[\/\:]*/g, '')] = path.slice(0, path.indexOf('/') > -1 ? path.indexOf('/') : path.length);
+      }
+
+      path = path.substring(path.indexOf('/') + 1);
+      splitKey.shift();
     }
 
     return output;
@@ -255,10 +259,10 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
         // If contains : then it has dynamic segments
         if (key.indexOf(':') > -1) {
 
-          var splitKey = key.split(':');
+          var splitKey = key.split(/(?=[:])/);
 
           // If there are more : than expected then there are multiple dynamic segments
-          if (splitKey.length > 2) {
+          if (splitKey.length >= 2) {
 
             routeData = dynamicSplit(path, splitKey);
             dynamicKey = key.replace(/\:[^\/]*/g, '[^\\/]*');
@@ -272,7 +276,8 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
         // If contains * then there is a wildcard segment
         if (key.match(/\*[a-z]+/i)) {
 
-          routeData[key.match(/\*[a-z]+/i)[0].replace(/\*/gi, '')] = path.replace(new RegExp(dynamicKey), '').match(/.*/)[0].split('/');
+          var temp = key.match(/.+?(?=\*)/);
+          routeData[key.match(/\*[a-z]+/i)[0].replace(/\*/gi, '')] = path.replace(temp, '').replace(new RegExp(dynamicKey), '').match(/.*/)[0].split('/');
           dynamicKey = '.*';
         }
 
@@ -710,9 +715,12 @@ Published: Wed Dec 23 2015 00:40:31 GMT+0000 (GMT) */
 
     if (options.view && !options.active) {
 
+      if (!options.view.template) options.view.template = {};
+      if (typeof options.view.template === 'object' && !options.view.template.url) options.view.template.url = options.path;
+
       if (isObject(options.view.template) && options.view.template.url) {
 
-        if (options.view.template.notOnSame && options.view.template.url === (window.LodeVar.previousPath || options.view.template.url)) {
+        if (options.view.template.url === (window.LodeVar.previousPath || options.view.template.url)) {
 
           options.view.template = parser(document.getElementsByTagName('body')[0], options.view.template);
 

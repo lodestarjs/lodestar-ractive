@@ -1,11 +1,11 @@
 {
   "name": "lodestar-ractive",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/lodestarjs/lodestar-ractive",
   "authors": [
     "danjford <forddj93@gmail.com>"
   ],
-  "description": "A combination of the LodestarJS-Router and RactiveJS in one place as a proof of concept, presented as a framework.",
+  "description": "A combination of the LodestarJS-Router and RactiveJS in one place, presented as a framework.",
   "main": "dist/lodestar-ractive.js",
   "license": "MIT",
   "ignore": [
