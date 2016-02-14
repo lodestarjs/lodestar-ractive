@@ -1,7 +1,7 @@
 /* Lodestar-Ractive - 1.2.1. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Sun Feb 14 2016 11:35:34 GMT+0000 (GMT) */
+Published: Sun Feb 14 2016 11:40:02 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -699,10 +699,8 @@ Published: Sun Feb 14 2016 11:35:34 GMT+0000 (GMT) */
       new Error('Use the observeOnce attribute in the route object.');
     };
 
-    if (typeof controllerOpts.controller) logger.warn('DEPRECATED: The controller attribute within the controller has been changed to onInit.');
-
-    if (typeof controllerOpts.onInit === 'function') {
-      controllerOpts.onInit.call(this.controllerModel, this.routeData || {});
+    if (typeof controllerOpts.controller === 'function') {
+      controllerOpts.controller.call(this.controllerModel, this.routeData || {});
     }
   }
 

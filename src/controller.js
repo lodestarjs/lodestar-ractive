@@ -24,10 +24,8 @@ function setup( options ) {
   this.controllerModel.observe = function() { new Error('Use the observe attribute in the route object.'); };
   this.controllerModel.observeOnce = function() { new Error('Use the observeOnce attribute in the route object.'); };
 
-  if ( typeof controllerOpts.controller) logger.warn('DEPRECATED: The controller attribute within the controller has been changed to onInit.');
-
-  if ( typeof controllerOpts.onInit === 'function' ) {
-    controllerOpts.onInit.call(this.controllerModel, this.routeData || {});
+  if ( typeof controllerOpts.controller === 'function' ) {
+    controllerOpts.controller.call(this.controllerModel, this.routeData || {});
   }
 
 }
