@@ -41,7 +41,7 @@ export default function setupController( options ) {
   if ( options.view && !options.active) {
 
     if ( !options.view.template ) options.view.template = {};
-    if ( typeof options.view.template === 'object' && !options.view.template.url ) options.view.template.url = options.path;
+    if (typeof options.view.template === 'object' && !options.view.template.t && !options.view.template.v && !options.view.template.url) options.view.template.url = options.path;
 
     if ( isObject(options.view.template) && options.view.template.url ) {
 
