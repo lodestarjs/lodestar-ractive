@@ -1,7 +1,7 @@
-/* Lodestar-Ractive - 1.1.1. 
+/* Lodestar-Ractive - 1.1.2. 
 Author: Dan J Ford 
 Contributors: undefined 
-Published: Sun Feb 14 2016 11:47:37 GMT+0000 (GMT) */
+Published: Fri Mar 18 2016 16:13:34 GMT+0000 (GMT) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -127,8 +127,8 @@ Published: Sun Feb 14 2016 11:47:37 GMT+0000 (GMT) */
     if (hasConsole && globals.DEBUG) console.warn.apply(console, arguments);
   };
 
-  var routerIntro = ['LodestarJs-Router 1.1.1 in debug mode.'];
-  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.1.1 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
+  var routerIntro = ['LodestarJs-Router 1.1.2 in debug mode.'];
+  var routerMessage = '\n\nHello, you are running the LodestarJs Router 1.1.2 in debug mode.\nThis will help you to identify any problems in your application.\n\nDEBUG mode is a global option, to disable debug mode will disable it for each\ninstance. You can disable it when declaring a new instance. For example,\nnew Router({DEBUG: false});\n\nFor documentation head to the wiki:\n  https://github.com/lodestarjs/lodestar-router/wiki\n\nIf you have found any bugs, create an issue for us:\n  https://github.com/lodestarjs/lodestar-router/issues\n\n';
 
   /**
    * The welcome function gives a message to the user letting the know
@@ -716,7 +716,7 @@ Published: Sun Feb 14 2016 11:47:37 GMT+0000 (GMT) */
     if (options.view && !options.active) {
 
       if (!options.view.template) options.view.template = {};
-      if (typeof options.view.template === 'object' && !options.view.template.url) options.view.template.url = options.path;
+      if (typeof options.view.template === 'object' && !options.view.template.t && !options.view.template.v && !options.view.template.url) options.view.template.url = options.path;
 
       if (isObject(options.view.template) && options.view.template.url) {
 
